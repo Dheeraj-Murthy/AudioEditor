@@ -15,6 +15,9 @@ public class Frame extends JFrame {
     private Dimension previousSize;  // Store size before maximizing
     private Point previousLocation;  // Store location before maximizing
 
+    private StagingArea stagingArea;
+    private TrackEditor trackEditor;
+
     public Frame() {
         super("Audio Editor");
 
@@ -30,19 +33,24 @@ public class Frame extends JFrame {
         JPanel titleBar = createTitleBar();
         add(titleBar, BorderLayout.NORTH);
 
-        StagingArea stagingArea = new StagingArea();
-        TrackEditor trackEditor = new TrackEditor();
+        stagingArea = new StagingArea(this);
+        trackEditor = new TrackEditor(this);
         JPanel controlPanel = createControlPanel();
+        stagingArea.setTrackEditor(trackEditor);
+        trackEditor.setStagingArea(stagingArea);
 
         // Wrap both panels in JScrollPane
         JScrollPane stagingScrollPane = new JScrollPane(stagingArea);
         JScrollPane trackScrollPane = new JScrollPane(trackEditor);
         JScrollPane controlPanelPane = new JScrollPane(controlPanel);
 
+        stagingScrollPane.setPreferredSize(new Dimension(200, this.getHeight()));
+
         // Add focus listeners to each scroll pane
         stagingScrollPane.addMouseListener(new PanelFocusAdapter(stagingScrollPane, this));
         trackScrollPane.addMouseListener(new PanelFocusAdapter(trackScrollPane, this));
         controlPanelPane.addMouseListener(new PanelFocusAdapter(controlPanelPane, this));
+        trackScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         reset(this);
 
@@ -114,6 +122,8 @@ public class Frame extends JFrame {
             // Restore to previous size and location
             setSize(previousSize);
             setLocation(previousLocation);
+            repaint();
+            revalidate();
         } else {
             // Store current size and location
             previousSize = getSize();
@@ -123,6 +133,8 @@ public class Frame extends JFrame {
             GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
             Rectangle screenBounds = env.getMaximumWindowBounds();
             setBounds(screenBounds);
+            repaint();
+            revalidate();
         }
         maximized = !maximized;  // Toggle the maximized state
     }

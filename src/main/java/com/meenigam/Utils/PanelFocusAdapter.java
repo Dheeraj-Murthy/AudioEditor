@@ -1,4 +1,4 @@
-package com.meenigam;
+package com.meenigam.Utils;
 
 import javax.swing.*;
 import java.awt.*;

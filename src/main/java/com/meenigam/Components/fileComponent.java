@@ -2,11 +2,13 @@ package com.meenigam.Components;
 
 
 import com.meenigam.Panels.StagingArea;
+import com.meenigam.Panels.TrackEditor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class fileComponent extends Button {
     private String Name;
@@ -56,10 +58,11 @@ public class fileComponent extends Button {
         switch (result) {
             case JOptionPane.YES_OPTION:
                 System.out.println("Option 1 selected");
-                s.addToTrack(this);
                 break;
             case JOptionPane.NO_OPTION:
                 System.out.println("Option 2 selected");
+                openTrackSelectionDialogBox(s);
+                s.addToTrack(this);
                 break;
             case JOptionPane.CANCEL_OPTION:
             case JOptionPane.CLOSED_OPTION:
@@ -68,6 +71,29 @@ public class fileComponent extends Button {
             default:
                 System.out.println("No option selected");
                 break;
+        }
+    }
+
+    private void openTrackSelectionDialogBox(StagingArea s) {
+        // Dialog to select a track from the available list
+        List<Track> availableTracks = TrackEditor.getTracks();
+        JComboBox<Track> trackComboBox = new JComboBox<>(availableTracks.toArray(new Track[0]));
+        int choice = JOptionPane.showConfirmDialog(
+                s,
+                trackComboBox,
+                "Choose Track to Add File",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (choice == JOptionPane.OK_OPTION) {
+            Track selectedTrack = (Track) trackComboBox.getSelectedItem();
+            if (selectedTrack != null) {
+                selectedTrack.setClip(this);
+                System.out.println("File added to track: " + selectedTrack);
+            }
+        } else {
+            System.out.println("Track selection canceled.");
         }
     }
 

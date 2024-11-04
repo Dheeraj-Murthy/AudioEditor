@@ -12,7 +12,8 @@ public class Clip extends JPanel {
         this.fileComponent = file;
         setBackground(new Color(100, 100, 100)); // Visual indicator of a clip
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        setPreferredSize(new Dimension(10, 10)); // Adjust as needed
+        setPreferredSize(new Dimension(100, 100)); // Adjust as needed
+//        setLayout(new FlowLayout());
         // Make it draggable
         MouseAdapter mouseHandler = new MouseAdapter() {
             private Point offset;

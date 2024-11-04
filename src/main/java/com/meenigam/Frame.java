@@ -2,6 +2,7 @@ package com.meenigam;
 
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
+import com.meenigam.Utils.PanelFocusAdapter;
 
 import javax.swing.*;
 import java.awt.*;

@@ -19,10 +19,9 @@ public class TrackEditor extends JPanel {
         // Add three sample track panels
         for (int i = 1; i < 6; i++) {
             Track track = new Track("Track" + i, tracks);
-            track.setClip(new fileComponent("Name" + i, "\\path\\to\\file", frame));
+//            track.setClip(new fileComponent("Name" + i, "\\path\\to\\file", frame));
             this.add(track);
         }
-
     }
 
     public void setStagingArea(StagingArea stagingArea) {
@@ -31,7 +30,9 @@ public class TrackEditor extends JPanel {
 
     public void addNewTrack(fileComponent file) {
         //TODO: create a new clip
-//        Clip clip = new Clip;
+        Track track = new Track("Track" + tracks.size(), tracks);
+        track.setClip(file);
+        this.add(track);
     }
 
     public static List<Track> getTracks() {

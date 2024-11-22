@@ -2,6 +2,7 @@ package com.meenigam;
 
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
+import com.meenigam.Panels.ControlPanel;
 import com.meenigam.Utils.PanelFocusAdapter;
 
 import javax.swing.*;
@@ -11,10 +12,10 @@ import java.awt.event.MouseEvent;
 
 public class Frame extends JFrame {
 
-    private int mouseX, mouseY;  // Store window drag position
-    private boolean maximized = false;  // Track maximized state
-    private Dimension previousSize;  // Store size before maximizing
-    private Point previousLocation;  // Store location before maximizing
+    private int mouseX, mouseY;
+    private boolean maximized = false;
+    private Dimension previousSize;
+    private Point previousLocation;
 
     private StagingArea stagingArea;
     private TrackEditor trackEditor;
@@ -36,21 +37,18 @@ public class Frame extends JFrame {
 
         stagingArea = new StagingArea(this);
         trackEditor = new TrackEditor(this);
-        JPanel controlPanel = createControlPanel();
         stagingArea.setTrackEditor(trackEditor);
         trackEditor.setStagingArea(stagingArea);
 
         // Wrap both panels in JScrollPane
         JScrollPane stagingScrollPane = new JScrollPane(stagingArea);
         JScrollPane trackScrollPane = new JScrollPane(trackEditor);
-        JScrollPane controlPanelPane = new JScrollPane(controlPanel);
 
         stagingScrollPane.setPreferredSize(new Dimension(200, this.getHeight()));
 
         // Add focus listeners to each scroll pane
         stagingScrollPane.addMouseListener(new PanelFocusAdapter(stagingScrollPane, this));
         trackScrollPane.addMouseListener(new PanelFocusAdapter(trackScrollPane, this));
-        controlPanelPane.addMouseListener(new PanelFocusAdapter(controlPanelPane, this));
         trackScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         reset(this);
@@ -59,8 +57,10 @@ public class Frame extends JFrame {
         add(stagingScrollPane, BorderLayout.WEST);
         // Add the track editor in the center
         add(trackScrollPane, BorderLayout.CENTER);
-        // Control panel at the bottom
-        add(controlPanelPane, BorderLayout.SOUTH);
+
+        // Add control panel at the bottom
+        ControlPanel controlPanel = new ControlPanel();
+        add(controlPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -99,7 +99,7 @@ public class Frame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    toggleMaximize();  // Maximize or restore on double-click
+                    toggleMaximize();
                 }
             }
         });
@@ -120,39 +120,21 @@ public class Frame extends JFrame {
 
     private void toggleMaximize() {
         if (maximized) {
-            // Restore to previous size and location
             setSize(previousSize);
             setLocation(previousLocation);
             repaint();
             revalidate();
         } else {
-            // Store current size and location
             previousSize = getSize();
             previousLocation = getLocation();
 
-            // Maximize to full screen
             GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
             Rectangle screenBounds = env.getMaximumWindowBounds();
             setBounds(screenBounds);
             repaint();
             revalidate();
         }
-        maximized = !maximized;  // Toggle the maximized state
-    }
-
-    private JPanel createControlPanel() {
-        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        controlPanel.setBackground(new Color(45, 45, 45));
-
-        JButton playButton = new JButton("Play");
-        JButton pauseButton = new JButton("Pause");
-        styleButton(playButton);
-        styleButton(pauseButton);
-
-        controlPanel.add(playButton);
-        controlPanel.add(pauseButton);
-
-        return controlPanel;
+        maximized = !maximized;
     }
 
     private void styleButton(JButton button) {
@@ -161,7 +143,7 @@ public class Frame extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(80, 80, 80)),
-                BorderFactory.createEmptyBorder(10, 20, 10, 20)  // Padding inside the button
+                BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
     }
 

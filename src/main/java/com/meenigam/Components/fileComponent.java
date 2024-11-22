@@ -62,7 +62,7 @@ public class fileComponent extends Button {
             case JOptionPane.NO_OPTION:
                 System.out.println("Option 2 selected");
                 openTrackSelectionDialogBox(s);
-                s.addToTrack(this);
+//                s.addToTrack(this, );
                 break;
             case JOptionPane.CANCEL_OPTION:
             case JOptionPane.CLOSED_OPTION:
@@ -83,6 +83,7 @@ public class fileComponent extends Button {
                 trackComboBox,
                 "Choose Track to Add File",
                 JOptionPane.OK_CANCEL_OPTION,
+//                JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE
         );
 

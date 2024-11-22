@@ -7,14 +7,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class ControlPanel extends JPanel {
-    private JButton playButton;
-    private JButton pauseButton;
-    private JButton stopButton;
-    private JSlider progressSlider;
+    private final JButton playButton;
+    private final JButton pauseButton;
+    private final JButton stopButton;
+    private final JSlider progressSlider;
 
     private Clip audioClip;  // Clip for audio playback
     private boolean isPaused = false;  // Track pause state

@@ -15,8 +15,7 @@ public class PanelFocusAdapter extends MouseAdapter {
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         for (Component comp : frame.getContentPane().getComponents()) {
-            if (comp instanceof JScrollPane) {
-                JScrollPane sp = (JScrollPane) comp;
+            if (comp instanceof JScrollPane sp) {
                 sp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             }
         }
@@ -26,8 +25,7 @@ public class PanelFocusAdapter extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         // Reset all scroll pane borders to gray
         for (Component comp : frame.getContentPane().getComponents()) {
-            if (comp instanceof JScrollPane) {
-                JScrollPane sp = (JScrollPane) comp;
+            if (comp instanceof JScrollPane sp) {
                 sp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             }
         }

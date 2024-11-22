@@ -1,12 +1,12 @@
 package com.meenigam.Components;
 
 import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.MouseAdapter;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Clip extends JPanel {
-    private fileComponent fileComponent;
+    private final fileComponent fileComponent;
 
     public Clip(fileComponent file, Track track) {
         this.fileComponent = file;

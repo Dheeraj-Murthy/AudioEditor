@@ -10,8 +10,8 @@ import java.util.List;
 
 public class TrackEditor extends JPanel {
 
+    private static final List<Track> tracks = new ArrayList<>();
     private StagingArea stagingArea;
-    private static List<Track> tracks = new ArrayList<>();
 
     public TrackEditor(Frame frame) {
         setBackground(new Color(30, 30, 30)); // Black background for track editor
@@ -24,6 +24,10 @@ public class TrackEditor extends JPanel {
         }
     }
 
+    public static List<Track> getTracks() {
+        return tracks;
+    }
+
     public void setStagingArea(StagingArea stagingArea) {
         this.stagingArea = stagingArea;
     }
@@ -33,9 +37,5 @@ public class TrackEditor extends JPanel {
         Track track = new Track("Track" + tracks.size(), tracks);
         track.setClip(file);
         this.add(track);
-    }
-
-    public static List<Track> getTracks() {
-        return tracks;
     }
 }

@@ -1,9 +1,12 @@
 package com.meenigam;
 
-import javax.swing.*;
-
 public class Manager {
-    Frame frame = new Frame();
+    Frame frame = new Frame(this);
+    public String HomePath = "";
+
+    public void setHomePath(String homePath) {
+        this.HomePath = homePath;
+    }
 
 
 }

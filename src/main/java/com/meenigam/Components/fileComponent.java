@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class fileComponent extends Button {
-    private String Name;
-    private String filePath;
-    private boolean isSelected = false;
+    private final String Name;
+    private final String filePath;
+    private final boolean isSelected = false;
 
     public fileComponent(String name, String filePath, Frame frame) {
         this.Name = name;
@@ -40,7 +40,7 @@ public class fileComponent extends Button {
     public void clicked(StagingArea s) {
         System.out.println("Button Clicked");
 
-        Object[] options = { "delete","Add to track"};
+        Object[] options = {"delete", "Add to track"};
 
         // Use JOptionPane for dialog instead of AWT Dialog
         int result = JOptionPane.showOptionDialog(

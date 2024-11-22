@@ -27,6 +27,10 @@ public class AudioPlayer {
         }
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new AudioPlayer("/Users/dheerajmurthy/Downloads/PinkPanther60.wav"));
+    }
+
     private void createGUI() {
         JFrame frame = new JFrame("Audio Player");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,9 +92,5 @@ public class AudioPlayer {
                 progressSlider.setValue(0);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AudioPlayer("/Users/dheerajmurthy/Downloads/PinkPanther60.wav"));
     }
 }

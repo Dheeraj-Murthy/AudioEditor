@@ -11,8 +11,8 @@ import java.awt.event.MouseEvent;
 
 public class StagingArea extends JPanel {
 
-    private DefaultListModel<fileComponent> listModel; // List model to manage data
-    private StagingArea stagingArea;
+    private final DefaultListModel<fileComponent> listModel; // List model to manage data
+    private final StagingArea stagingArea;
     private TrackEditor trackEditor;
 
     public StagingArea(Frame frame) {
@@ -79,7 +79,7 @@ public class StagingArea extends JPanel {
         });
     }
 
-    public void addToTrack(fileComponent file){
+    public void addToTrack(fileComponent file) {
         trackEditor.addNewTrack(file);
     }
 

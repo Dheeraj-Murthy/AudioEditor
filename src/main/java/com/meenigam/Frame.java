@@ -1,27 +1,33 @@
 package com.meenigam;
 
+import com.meenigam.Panels.ControlPanel;
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
-import com.meenigam.Panels.ControlPanel;
 import com.meenigam.Utils.PanelFocusAdapter;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Frame extends JFrame {
+
+    private Manager manager;
 
     private int mouseX, mouseY;
     private boolean maximized = false;
     private Dimension previousSize;
     private Point previousLocation;
 
-    private StagingArea stagingArea;
-    private TrackEditor trackEditor;
+    private final StagingArea stagingArea;
+    private final TrackEditor trackEditor;
 
-    public Frame() {
+    public Frame(Manager manager) {
         super("Audio Editor");
+        this.manager = manager;
 
         // Remove default decorations
         setUndecorated(true);
@@ -65,10 +71,11 @@ public class Frame extends JFrame {
         setVisible(true);
     }
 
+
+
     private void reset(JFrame frame) {
         for (Component comp : frame.getContentPane().getComponents()) {
-            if (comp instanceof JScrollPane) {
-                JScrollPane sp = (JScrollPane) comp;
+            if (comp instanceof JScrollPane sp) {
                 sp.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             }
         }
@@ -77,6 +84,16 @@ public class Frame extends JFrame {
     private JPanel createTitleBar() {
         JPanel titleBar = new JPanel(new BorderLayout());
         titleBar.setBackground(new Color(45, 45, 45));
+
+        JButton setHome = new JButton("Project");
+        setHome.setForeground(Color.white);
+        setHome.setBackground(new Color(0, 0, 0));
+        setHome.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY), new EmptyBorder(10, 20, 10, 20)));
+        setHome.setFocusPainted(false);
+        setHome.setFont(new Font("Arial", Font.BOLD, 14));
+        titleBar.add(setHome, BorderLayout.WEST);
+        setHome.addActionListener(e -> HomePathDialog());
+
 
         JLabel titleLabel = new JLabel("Audio Editor", JLabel.CENTER);
         titleLabel.setForeground(Color.WHITE);
@@ -118,6 +135,22 @@ public class Frame extends JFrame {
         return titleBar;
     }
 
+    private void HomePathDialog() {
+
+
+        JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        chooser.setDialogTitle("Choose Parent Directory");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int result = chooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            manager.setHomePath(path);
+            JOptionPane.showMessageDialog(this, "Project directory set to:\n" + path,
+                    "Directory Selected", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     private void toggleMaximize() {
         if (maximized) {
             setSize(previousSize);
@@ -145,9 +178,5 @@ public class Frame extends JFrame {
                 BorderFactory.createLineBorder(new Color(80, 80, 80)),
                 BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Frame::new);
     }
 }

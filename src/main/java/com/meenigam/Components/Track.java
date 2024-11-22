@@ -5,16 +5,15 @@ import com.meenigam.Panels.TrackEditor;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Track extends JPanel {
-    private List<Track> tracks;
     private final Color backgroundColor = new Color(50, 50, 50);
     private final Border border = BorderFactory.createLineBorder(new Color(70, 70, 70));
     private final Color foreground = Color.white;
-    private JPanel clipContainer;  // Holds clips horizontally
-    private String title;
+    private final List<Track> tracks;
+    private final JPanel clipContainer;  // Holds clips horizontally
+    private final String title;
 
     public Track(String title, List<Track> tracks) {
         this.tracks = tracks;
@@ -49,7 +48,8 @@ public class Track extends JPanel {
         revalidate();
         repaint();
     }
-    public String toString(){
+
+    public String toString() {
         return this.title;
     }
 }

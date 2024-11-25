@@ -6,9 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Clip extends JPanel {
-    private final fileComponent fileComponent;
+    private final FileComponent fileComponent;
 
-    public Clip(fileComponent file, Track track) {
+    public Clip(FileComponent file, Track track) {
         this.fileComponent = file;
         setBackground(new Color(100, 100, 100)); // Visual indicator of a clip
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -36,7 +36,7 @@ public class Clip extends JPanel {
     }
 
     // Additional methods for interacting with the fileComponent
-    public fileComponent getFileComponent() {
+    public FileComponent getFileComponent() {
         return fileComponent;
     }
 

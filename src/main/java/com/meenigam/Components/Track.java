@@ -42,7 +42,7 @@ public class Track extends JPanel {
         }
     }
 
-    public void setClip(fileComponent fileComponent) {
+    public void setClip(FileComponent fileComponent) {
         Clip clip = new Clip(fileComponent, this);
         clipContainer.add(clip); // Add to clip container for horizontal layout
         revalidate();

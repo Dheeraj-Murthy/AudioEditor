@@ -1,4 +1,5 @@
 package com.meenigam.Panels;
+import com.meenigam.Frame;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -8,20 +9,23 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
+
 public class ControlPanel extends JPanel {
     private final JButton playButton;
     private final JButton pauseButton;
     private final JButton stopButton;
     private final JSlider progressSlider;
+    private Frame frame;
 
     private Clip audioClip;  // Clip for audio playback
     private boolean isPaused = false;  // Track pause state
     private long clipPosition = 0;  // Store current clip position
     private Timer progressTimer;  // Timer for updating slider progress
 
-    public ControlPanel() {
+    public ControlPanel(Frame frame) {
         setLayout(new BorderLayout());
         setBackground(new Color(45, 45, 45));
+        this.frame = frame;
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(new Color(45, 45, 45));
@@ -63,12 +67,19 @@ public class ControlPanel extends JPanel {
             }
         });
 
+//        this.frame.setSlider(progressSlider);
         // Add components to the panel
         add(buttonPanel, BorderLayout.NORTH);
         add(progressSlider, BorderLayout.SOUTH);
 
         loadAudio("/Users/dheerajmurthy/Downloads/PinkPanther60.wav");  // Specify the audio file path
     }
+
+    public JSlider getProgressSlider() {
+        return progressSlider;
+    }
+
+
 
     private void styleButton(JButton button) {
         button.setBackground(new Color(60, 60, 60));

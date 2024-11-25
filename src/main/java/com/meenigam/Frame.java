@@ -29,6 +29,11 @@ public class Frame extends JFrame {
         super("Audio Editor");
         this.manager = manager;
 
+        // Add control panel at the bottom
+        ControlPanel controlPanel = new ControlPanel(this);
+
+        JSlider slider = controlPanel.getProgressSlider();
+
         // Remove default decorations
         setUndecorated(true);
         setSize(1024, 680);
@@ -42,7 +47,7 @@ public class Frame extends JFrame {
         add(titleBar, BorderLayout.NORTH);
 
         stagingArea = new StagingArea(this);
-        trackEditor = new TrackEditor(this);
+        trackEditor = new TrackEditor(this, slider);
         stagingArea.setTrackEditor(trackEditor);
         trackEditor.setStagingArea(stagingArea);
 
@@ -64,14 +69,15 @@ public class Frame extends JFrame {
         // Add the track editor in the center
         add(trackScrollPane, BorderLayout.CENTER);
 
-        // Add control panel at the bottom
-        ControlPanel controlPanel = new ControlPanel();
         add(controlPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 
+    public void setSlider(JSlider slider) {
+        trackEditor.setSlider(slider);
 
+    }
 
     private void reset(JFrame frame) {
         for (Component comp : frame.getContentPane().getComponents()) {

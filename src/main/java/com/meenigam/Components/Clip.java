@@ -43,11 +43,12 @@ public class Clip extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 Point location = getLocation();
                 Point newLocation = new Point(location);
+                newLocation.translate(e.getX() - offset.x, 0);
                 if (isOutOfBounds(newLocation))
                 {
+                    setLocation(location);
                     return;
                 }
-                newLocation.translate(e.getX() - offset.x, 0);
 
                 Rectangle oldBounds = getBounds();
                 setLocation(newLocation);

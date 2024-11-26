@@ -41,7 +41,11 @@ public class StagingArea extends JPanel {
         add(scrollPane, BorderLayout.CENTER); // Add scroll pane in the center
 
         // Create "Add File" button
-        Button addFile = new Button("Add File");
+        JButton addFile = new JButton("Add File");
+        addFile.setBackground(Color.BLACK);
+        addFile.setForeground(Color.WHITE);
+        addFile.setOpaque(true);
+        addFile.setBorderPainted(false);
         add(addFile, BorderLayout.SOUTH);
 
         // Button action to open a file dialog and add the selected file to the list

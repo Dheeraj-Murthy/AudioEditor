@@ -56,6 +56,7 @@ public class Frame extends JFrame {
         JScrollPane trackScrollPane = new JScrollPane(trackEditor);
 
         stagingScrollPane.setPreferredSize(new Dimension(200, this.getHeight()));
+        stagingScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         // Add focus listeners to each scroll pane
         stagingScrollPane.addMouseListener(new PanelFocusAdapter(stagingScrollPane, this));

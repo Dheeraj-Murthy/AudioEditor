@@ -22,7 +22,7 @@ public class ControlPanel extends JPanel {
     private long clipPosition = 0;  // Store current clip position
     private Timer progressTimer;  // Timer for updating slider progress
 
-    public ControlPanel(Frame frame) {
+    public ControlPanel(Frame frame, String finalFilePath) {
         setLayout(new BorderLayout());
         setBackground(new Color(45, 45, 45));
         this.frame = frame;
@@ -72,7 +72,7 @@ public class ControlPanel extends JPanel {
         add(buttonPanel, BorderLayout.NORTH);
         add(progressSlider, BorderLayout.SOUTH);
 
-        loadAudio("/Users/dheerajmurthy/Downloads/PinkPanther60.wav");  // Specify the audio file path
+        loadAudio(finalFilePath);  // Specify the audio file path
     }
 
     public JSlider getProgressSlider() {

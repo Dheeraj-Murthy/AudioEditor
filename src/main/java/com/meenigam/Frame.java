@@ -30,7 +30,7 @@ public class Frame extends JFrame {
         this.manager = manager;
 
         // Add control panel at the bottom
-        ControlPanel controlPanel = new ControlPanel(this);
+        ControlPanel controlPanel = new ControlPanel(this, manager.finalFilePath);
 
         JSlider slider = controlPanel.getProgressSlider();
 

@@ -9,6 +9,5 @@ public class callNative {
         new callNative().sayHello("woow");
     }
 
-    private void sayHello(String woow) {
-    }
+    private native void sayHello(String woow);
 }

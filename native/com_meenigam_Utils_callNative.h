@@ -9,11 +9,11 @@ extern "C" {
 #endif
 /*
  * Class:     com_meenigam_Utils_callNative
- * Method:    giveVector
- * Signature: ()[I
+ * Method:    sayHello
+ * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT jintArray JNICALL Java_com_meenigam_Utils_callNative_giveVector
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_com_meenigam_Utils_callNative_sayHello
+  (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus
 }

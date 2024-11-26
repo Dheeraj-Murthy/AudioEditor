@@ -23,6 +23,7 @@ public class Track extends JPanel {
 //        setLayout(new BorderLayout()); // Use BorderLayout for structured positioning
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JLabel titleLabel = new JLabel(title);
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         titleLabel.setForeground(foreground);
         add(titleLabel, BorderLayout.NORTH);
 
@@ -30,9 +31,10 @@ public class Track extends JPanel {
         clipContainer = new JPanel();
         clipContainer.setLayout(new FlowLayout(FlowLayout.LEFT)); // Left-align clips
         clipContainer.setOpaque(false); // Matches the background
+//        clipContainer.setPreferredSize(new Dimension(getWidth(), getHeight()));
         add(clipContainer, BorderLayout.CENTER);
 
-        setPreferredSize(new Dimension(300, 50)); // Adjust dimensions as needed
+        setPreferredSize(new Dimension(getWidth(), this.getHeight())); // Adjust dimensions as needed
         tracks.add(this);
     }
 
@@ -48,6 +50,10 @@ public class Track extends JPanel {
         revalidate();
         repaint();
         clip.repaint();
+    }
+
+    public JPanel getClipContainer() {
+        return clipContainer;
     }
 
     public String toString() {

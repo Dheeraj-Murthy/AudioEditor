@@ -1,6 +1,9 @@
 package com.meenigam.Components;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -9,8 +12,10 @@ import java.io.IOException;
 public class WaveformPanel extends JPanel {
 
     private float[] audioSamples;
+    Clip clip;
 
-    public WaveformPanel(File audioFile) {
+    public WaveformPanel(File audioFile, Clip clip) {
+        this.clip = clip;
         try {
             audioSamples = readAudioData(audioFile);
         } catch (Exception e) {
@@ -26,8 +31,8 @@ public class WaveformPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.GREEN);
 
-        int width = getWidth();
-        int height = getHeight();
+        int width = clip.getWidth();
+        int height = clip.getHeight();
         int middle = height / 2;
 
         g2d.fillRect(0, middle - 1, width, 2); // Draw middle line
@@ -67,17 +72,5 @@ public class WaveformPanel extends JPanel {
         }
 
         return audioData;
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Waveform Viewer");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 400);
-
-        File wavFile = new File("path/to/your/audiofile.wav");
-        WaveformPanel panel = new WaveformPanel(wavFile);
-
-        frame.add(panel);
-        frame.setVisible(true);
     }
 }

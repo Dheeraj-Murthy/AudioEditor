@@ -20,7 +20,7 @@ public class TrackEditor extends JPanel {
         this.slider = slider;
         this.add(slider, BorderLayout.NORTH);
         // Add three sample track panels
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 5; i++) {
             Track track = new Track("Track" + i, tracks);
 //            track.setClip(new fileComponent("Name" + i, "\\path\\to\\file", frame));
             this.add(track);

@@ -4,10 +4,13 @@ package com.meenigam.Components;
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class FileComponent extends Button {
@@ -15,13 +18,33 @@ public class FileComponent extends Button {
     private final String filePath;
     private final boolean isSelected = false;
     private StagingArea stagingArea;
+    private final float size;
+    private final File file;
 
     public FileComponent(String name, String filePath, Frame frame, StagingArea stagingArea) {
+        float size1;
         this.Name = name;
         this.filePath = filePath;
         this.stagingArea = stagingArea;
 
+        // Calculate the duration of the wav file
+        File file = new File(filePath);
+        this.file = file;
+        if (file.exists() && file.isFile()) {
+            try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file)) {
+                AudioFormat format = audioInputStream.getFormat();
+                long frames = audioInputStream.getFrameLength();
+                size1 = (frames / format.getFrameRate()); // Duration in seconds
+            } catch (UnsupportedAudioFileException | IOException e) {
+//                e.printStackTrace();
+                System.out.println(e.getStackTrace());
+                size1 = 0; // Default size if an error occurs
+            }
+        } else {
+            size1 = 0; // Default size if file does not exist or is not a valid file
+        }
 
+        this.size = size1;
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -32,6 +55,14 @@ public class FileComponent extends Button {
                         JOptionPane.INFORMATION_MESSAGE);
             }
         });
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public float getDuration() {
+        return size;
     }
 
     public void clicked(StagingArea s) {

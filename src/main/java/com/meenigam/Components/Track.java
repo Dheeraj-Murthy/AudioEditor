@@ -47,6 +47,7 @@ public class Track extends JPanel {
         clipContainer.add(clip); // Add to clip container for horizontal layout
         revalidate();
         repaint();
+        clip.repaint();
     }
 
     public String toString() {

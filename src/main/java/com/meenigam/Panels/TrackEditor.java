@@ -31,7 +31,7 @@ public class TrackEditor extends JPanel {
         this.add(slider, BorderLayout.NORTH);
 
         // Add some sample tracks
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 8; i++) {
             Track track = new Track("Track" + i, tracks, this);
             this.add(track);
         }

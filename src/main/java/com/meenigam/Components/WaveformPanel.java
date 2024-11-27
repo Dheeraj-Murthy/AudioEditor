@@ -1,9 +1,6 @@
 package com.meenigam.Components;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -12,7 +9,7 @@ import java.io.IOException;
 public class WaveformPanel extends JPanel {
 
     private float[] audioSamples;
-    Clip clip;
+    private Clip clip;
 
     public WaveformPanel(File audioFile, Clip clip) {
         this.clip = clip;
@@ -21,39 +18,51 @@ public class WaveformPanel extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        setSize(clip.getWidth(), 100); // Set the size of the panel
+
+        // Start a timer to repaint the panel every second
+        Timer timer = new Timer(1000, e -> repaint());
+        timer.start(); // Start the timer
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (audioSamples == null) return;
-        setBackground(new Color(50, 50, 50));
+        setBackground(new Color(50, 50, 50)); // Set the background color to dark gray
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.GREEN);
+        g2d.setColor(Color.GREEN); // Set the waveform color to green
 
+        int width = getWidth(); // Get the width of the panel
+        int height = getHeight(); // Get the height of the panel
+        int middle = height / 2; // Find the middle of the panel to center the waveform
 
-        int width = clip.getWidth();
-        int height = clip.getHeight();
-        int middle = height / 2;
+        g2d.fillRect(0, middle - 1, width, 2); // Draw the middle line
 
-        g2d.fillRect(0, middle - 1, width, 2); // Draw middle line
+        // Find the maximum sample value for scaling
         float max = 0;
         for (float audioSample : audioSamples) {
             if (audioSample > max) {
                 max = audioSample;
             }
         }
-        float scale = height / (middle * max);
-        for (int i = 0; i < width; i++) {
-            // Map samples to screen width
-            int sampleIndex = (int) ((i / (float) width) * audioSamples.length);
-            int amplitude = (int) (audioSamples[sampleIndex] * middle * scale); // Scale to panel height
 
+        // Scale factor to fit the waveform within the panel height
+        float scale = height / (middle * max);
+
+        // Draw the waveform based on the audio samples
+        for (int i = 0; i < width; i++) {
+            // Map the screen width to the audio sample array
+            int sampleIndex = (int) ((i / (float) width) * audioSamples.length);
+            int amplitude = (int) (audioSamples[sampleIndex] * middle * scale); // Scale the sample
+
+            // Draw a line for each sample at the corresponding position
             g2d.drawLine(i, middle - amplitude, i, middle + amplitude);
         }
     }
 
+    // Method to read audio data from the file and convert to PCM samples
     private float[] readAudioData(File audioFile) throws UnsupportedAudioFileException, IOException {
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
         AudioFormat format = audioInputStream.getFormat();

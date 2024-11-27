@@ -689,8 +689,8 @@ void superimposeWAVFiles(
 void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<string> params) {
     streampos pos;
 
-    // cout << "0  : Details\n1  : Loop\n2  : Trim\n3  : Clip Gain\n4  : Frequency Scaling\n5  : Time Scaling\n6  : Compressing\n7  : Audio Filter\n8  : Normalize\n9  : Reverb\n10 : Superimposition\n11 : EXIT" << endl;
-    // cout << "Enter function: ";
+    cout << "0  : Details\n1  : Loop\n2  : Trim\n3  : Clip Gain\n4  : Frequency Scaling\n5  : Time Scaling\n6  : Compressing\n7  : Audio Filter\n8  : Normalize\n9  : Reverb\n10 : Superimposition\n11 : EXIT" << endl;
+    cout << "Enter function: ";
     // cin >> input;
 
     switch (input) {
@@ -699,7 +699,6 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
                 WAVHeader header;
                 pos = readWAVFile(inputFilePath, header);
                 streampos headerOffset = ios::cur;
-
                 displayWAVHeader(header);
             } catch (const exception &e) {
                 cerr << "Error: " << e.what() << endl;
@@ -709,10 +708,10 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
 
         case 1: // Loop
             try {
-                int loopCount = reinterpret_cast<int>(params[0]);
-
+                int loopCount = stoi(params[0]);
                 // Loop the audio and write to output file
                 loopAudio(inputFilePath, loopCount, outputFilePath);
+                cout << "Hwllo";
 
             } catch (const exception &e) {
                 cerr << "Error: " << e.what() << endl;
@@ -722,8 +721,8 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
 
         case 2: // Trim
             try {
-                int splitTimeMs = reinterpret_cast<int>(params[0]);
-                int choice = reinterpret_cast<int>(params[1]);
+                int splitTimeMs = stoi(params[0]);
+                int choice = stoi(params[1]);
 
                 // Trim the audio file
                 trimAudio(inputFilePath, splitTimeMs, outputFilePath, choice);
@@ -735,8 +734,9 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
             break;
 
         case 3: // amp
+        {
 
-            double factor = reinterpret_cast<double>(params[0]);
+            double factor = stod(params[0]);
 
             try {
                 ampScale(inputFilePath, outputFilePath, factor);
@@ -747,11 +747,12 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
             }
 
             break;
+        }
 
         case 4: // Frequency manupilator
 
             try {
-                float manipulationFactor = reinterpret_cast<double>(params[0]);
+                float manipulationFactor = stod(params[0]);
 
                 frequencyManipulator(inputFilePath, outputFilePath, manipulationFactor);
 
@@ -765,7 +766,7 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
 
             try {
 
-                float timeToBeScaled = reinterpret_cast<float>(params[0]);
+                float timeToBeScaled = stof(params[0]);
 
                 frequencyManipulator(inputFilePath, outputFilePath, timeToBeScaled);
 
@@ -776,16 +777,19 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
             break;
 
         case 6: // Compressor
+        {
 
-            double threshold = reinterpret_cast<double>(params[0]);
-            double ratio = reinterpret_cast<double>(params[1]);
+            double threshold = stod(params[0]);
+            double ratio = stod(params[1]);
 
             applyCompression(inputFilePath, outputFilePath, threshold, ratio);
             break;
+        }
 
         case 7: // audiofilter
-            double cutoffFrequency = reinterpret_cast<double>(params[0]);
-            char filterType = reinterpret_cast<char>(params[1]);
+        {
+            double cutoffFrequency = stod(params[0]);
+            char filterType = (params[1][0]);
 
             try {
                 if (filterType == 'L' || filterType == 'l') {
@@ -799,6 +803,7 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
                 cerr << "Error: " << e.what() << endl;
             }
             break;
+        }
 
         case 8: // normalize
             try {
@@ -811,8 +816,9 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
             break;
 
         case 9: // reverb
+        {
 
-            int reverbLevel = reinterpret_cast<int>(params[0]);
+            int reverbLevel = stoi(params[0]);
 
             try {
                 // Apply reverb
@@ -823,8 +829,10 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
                 cerr << "Error: " << e.what() << endl;
             }
             break;
+        }
 
         case 10: // superimposition
+        {
 
             string overlayFilePath;
             int offsetMs;
@@ -840,6 +848,7 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
                 cerr << "Error: " << e.what() << endl;
             }
             break;
+        }
     }
 
     return;
@@ -853,6 +862,6 @@ int main1() {
     cout << "Enter the path of the WAV file: ";
     cin >> inputFilePath;
 
-    utilityBelt(n, inputFilePath, inputFilePath);
+    // utilityBelt(n, inputFilePath, inputFilePath, );
     return 0;
 }

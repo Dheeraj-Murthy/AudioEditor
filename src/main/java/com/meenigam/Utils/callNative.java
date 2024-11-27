@@ -8,7 +8,7 @@ public class callNative {
     public static void main(String[] args) {
 //        new callNative().sayHello("aloo", 8, new String[]{"yo", "uo"});
 //        callCode("");
-        callCode("aloo", 8, new String[]{"aloo"});
+        callCode("/Users/dheerajmurthy/Desktop/ProjectFiles/finalFile.wav", 8, new String[]{"aloo"});
     }
 
     public static void callCode(String message, int operation, String[] params) {

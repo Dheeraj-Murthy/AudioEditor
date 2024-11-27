@@ -27,9 +27,11 @@ public class WaveformPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (audioSamples == null) return;
+        setBackground(new Color(50, 50, 50));
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.GREEN);
+        g2d.setColor(Color.WHITE);
+
 
         int width = clip.getWidth();
         int height = clip.getHeight();

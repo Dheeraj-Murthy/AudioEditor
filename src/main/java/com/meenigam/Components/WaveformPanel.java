@@ -30,7 +30,7 @@ public class WaveformPanel extends JPanel {
         setBackground(new Color(50, 50, 50));
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(Color.GREEN);
 
 
         int width = clip.getWidth();

@@ -45,12 +45,6 @@ public class Track extends JPanel {
         titleLabel.setForeground(foreground);
         topPanel.add(titleLabel, BorderLayout.WEST);
 
-//        JButton buildButton = new JButton(":");
-//        buildButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        buildButton.setForeground(foreground);
-//        buildButton.setBackground(backgroundColor);
-//        buildButton.setBorder(null);
-//        topPanel.add(buildButton, BorderLayout.EAST);
         JButton buildButton = new JButton(":");
         buildButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         buildButton.setForeground(new Color(200, 200, 200)); // Light gray text color
@@ -124,6 +118,37 @@ public class Track extends JPanel {
                         }
                         switch (selectedOption) {
                             case "Loop":
+                                try {
+                                    String userInput = JOptionPane.showInputDialog(
+                                            null,
+                                            "Please input loop count: ",
+                                            "Loops: ",
+                                            JOptionPane.QUESTION_MESSAGE
+                                    );
+
+                                    // Check if the user clicked "Cancel" or closed the dialog
+                                    if (userInput == null) {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+
+                                    int loop = Integer.parseInt(userInput);
+                                    // todo: call native with filename, option, and count
+
+                                } catch (NumberFormatException E) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
                             case "Trim":

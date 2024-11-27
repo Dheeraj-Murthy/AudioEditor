@@ -2,6 +2,7 @@ package com.meenigam;
 
 import com.meenigam.Components.WavFileCreator;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ public class Manager {
     private String userHome = System.getProperty("user.home");
     public final String finalFilePath;
 
-    public Manager() throws IOException {
+    public Manager() throws IOException, UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         File baseDir = new File(userHome, HomePath);
         // Check if base directory exists
         if (!baseDir.exists() || !baseDir.isDirectory()) {
@@ -27,7 +28,7 @@ public class Manager {
             }
         }
         File newFile = new File(newFolder, finalFile);
-        WavFileCreator.createBlankWav(newFile.getAbsolutePath(), 10);
+        WavFileCreator.createBlankWav(newFile.getAbsolutePath(), 130);
         finalFilePath = newFile.getAbsolutePath();
 
         frame = new Frame(this);

@@ -1,8 +1,11 @@
 package com.meenigam.Panels;
+
 import com.meenigam.Frame;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,6 +19,7 @@ public class ControlPanel extends JPanel {
     private final JButton stopButton;
     private final JSlider progressSlider;
     private Frame frame;
+    private final JLabel timerLabel;
 
     private Clip audioClip;  // Clip for audio playback
     private boolean isPaused = false;  // Track pause state
@@ -27,8 +31,12 @@ public class ControlPanel extends JPanel {
         setBackground(new Color(45, 45, 45));
         this.frame = frame;
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setBackground(new Color(45, 45, 45));
+
+        // Sub-panel for buttons, centered
+        JPanel buttonSubPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));  // Centered buttons
+        buttonSubPanel.setBackground(new Color(45, 45, 45));
 
         playButton = new JButton("Play");
         pauseButton = new JButton("Pause");
@@ -41,16 +49,31 @@ public class ControlPanel extends JPanel {
         pauseButton.addActionListener(e -> pauseAudio());
         stopButton.addActionListener(e -> stopAudio());
 
-        buttonPanel.add(playButton);
-        buttonPanel.add(pauseButton);
-        buttonPanel.add(stopButton);
+        buttonSubPanel.add(playButton);
+        buttonSubPanel.add(pauseButton);
+        buttonSubPanel.add(stopButton);
+
+        timerLabel = new JLabel("00:00");
+        timerLabel.setForeground(Color.WHITE);
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 14));
+
+        // Combine an EmptyBorder (for padding) with the existing border
+        Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 10); // top, left, bottom, right
+        Border lineBorder = BorderFactory.createLineBorder(new Color(70, 70, 70));
+        setBorder(new CompoundBorder(lineBorder, padding));
+
+        // Add buttonSubPanel to the center of the buttonPanel
+        buttonPanel.add(buttonSubPanel, BorderLayout.CENTER);
+
+        // Add the timer label to the right end of the buttonPanel
+        buttonPanel.add(timerLabel, BorderLayout.EAST);
 
         // Add the progress slider
-        progressSlider = new JSlider(0, 100, 0);
+        progressSlider = new JSlider();
         progressSlider.setBackground(new Color(45, 45, 45));
         progressSlider.setForeground(Color.WHITE);
         progressSlider.setValue(0);
-        progressSlider.setEnabled(false);
+        progressSlider.setEnabled(true);
 
         // Add listener to handle user seeking
         progressSlider.addMouseListener(new MouseAdapter() {
@@ -58,11 +81,19 @@ public class ControlPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 if (audioClip != null) {
                     int sliderValue = progressSlider.getValue();
-                    long newClipPosition = (long) (sliderValue / 100.0 * audioClip.getMicrosecondLength());
-                    audioClip.setMicrosecondPosition(newClipPosition);
-                    if (!audioClip.isRunning() && !isPaused) {
-                        playAudio();
-                    }
+                    double newClipPosition =  (sliderValue / 100.0) * audioClip.getMicrosecondLength();
+                    audioClip.setMicrosecondPosition((long) newClipPosition);
+
+                    // Calculate current time (in seconds)
+                    long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000; // Convert microseconds to seconds
+                    long minutes = currentTimeInSeconds / 60;
+                    long seconds = currentTimeInSeconds % 60;
+
+                    // Format the timer label as MM:SS
+                    String formattedTime = String.format("%02d:%02d", minutes, seconds);
+                    timerLabel.setText(formattedTime);  // Update the timer label
+                    System.out.println(currentTimeInSeconds);
+
                 }
             }
         });
@@ -70,7 +101,7 @@ public class ControlPanel extends JPanel {
 //        this.frame.setSlider(progressSlider);
         // Add components to the panel
         add(buttonPanel, BorderLayout.NORTH);
-        add(progressSlider, BorderLayout.SOUTH);
+//        add(progressSlider, BorderLayout.SOUTH);
 
         loadAudio(finalFilePath);  // Specify the audio file path
     }
@@ -78,7 +109,6 @@ public class ControlPanel extends JPanel {
     public JSlider getProgressSlider() {
         return progressSlider;
     }
-
 
 
     private void styleButton(JButton button) {
@@ -140,12 +170,34 @@ public class ControlPanel extends JPanel {
         }
     }
 
+    private float getTime() {
+        return progressSlider.getValue();
+    }
+
     private void updateSlider() {
         if (audioClip != null && audioClip.isRunning()) {
-            long currentPos = audioClip.getMicrosecondPosition();
-            long totalLength = audioClip.getMicrosecondLength();
-            int progress = (int) ((currentPos / (double) totalLength) * 100);
-            progressSlider.setValue(progress);
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
+                @Override
+                protected Void doInBackground() {
+                    long currentPos = audioClip.getMicrosecondPosition();
+                    long totalLength = audioClip.getMicrosecondLength();
+                    int progress = (int) ((currentPos / (double) totalLength) * 100);
+                    progressSlider.setValue(progress);
+
+                    // Calculate current time (in seconds)
+                    long currentTimeInSeconds = currentPos / 1000000; // Convert microseconds to seconds
+                    long minutes = currentTimeInSeconds / 60;
+                    long seconds = currentTimeInSeconds % 60;
+
+                    // Format the timer label as MM:SS
+                    String formattedTime = String.format("%02d:%02d", minutes, seconds);
+                    timerLabel.setText(formattedTime);  // Update the timer label
+                    System.out.println(Float.parseFloat(formattedTime));
+
+                    return null;
+                }
+            };
+            worker.execute();
         }
     }
 

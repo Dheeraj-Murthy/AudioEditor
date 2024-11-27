@@ -1,5 +1,6 @@
 package com.meenigam;
 
+
 import com.meenigam.Panels.ControlPanel;
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
@@ -24,15 +25,16 @@ public class Frame extends JFrame {
 
     private final StagingArea stagingArea;
     private final TrackEditor trackEditor;
+    private JSlider slider;
 
-    public Frame(Manager manager) {
+    public Frame(Manager manager) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         super("Audio Editor");
         this.manager = manager;
 
         // Add control panel at the bottom
         ControlPanel controlPanel = new ControlPanel(this, manager.finalFilePath);
 
-        JSlider slider = controlPanel.getProgressSlider();
+        this.slider = controlPanel.getProgressSlider();
 
         // Remove default decorations
         setUndecorated(true);
@@ -47,7 +49,7 @@ public class Frame extends JFrame {
         add(titleBar, BorderLayout.NORTH);
 
         stagingArea = new StagingArea(this);
-        trackEditor = new TrackEditor(this, slider);
+        trackEditor = new TrackEditor(this, this.slider);
         stagingArea.setTrackEditor(trackEditor);
         trackEditor.setStagingArea(stagingArea);
 

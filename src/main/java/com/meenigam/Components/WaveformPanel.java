@@ -36,11 +36,17 @@ public class WaveformPanel extends JPanel {
         int middle = height / 2;
 
         g2d.fillRect(0, middle - 1, width, 2); // Draw middle line
-
+        float max = 0;
+        for (float audioSample : audioSamples) {
+            if (audioSample > max) {
+                max = audioSample;
+            }
+        }
+        float scale = height / (middle * max);
         for (int i = 0; i < width; i++) {
             // Map samples to screen width
             int sampleIndex = (int) ((i / (float) width) * audioSamples.length);
-            int amplitude = (int) (audioSamples[sampleIndex] * middle); // Scale to panel height
+            int amplitude = (int) (audioSamples[sampleIndex] * middle * scale); // Scale to panel height
 
             g2d.drawLine(i, middle - amplitude, i, middle + amplitude);
         }

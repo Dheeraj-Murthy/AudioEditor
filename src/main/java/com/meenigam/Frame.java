@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -75,6 +76,14 @@ public class Frame extends JFrame {
         add(controlPanel, BorderLayout.SOUTH);
 
         setVisible(true);
+        // Start the timer to trigger repaint every second
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                repaint();
+            }
+        });
+        timer.start(); // Start the timer
     }
 
     public void setSlider(JSlider slider) {

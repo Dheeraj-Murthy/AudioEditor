@@ -11,7 +11,7 @@ public class Clip extends JPanel {
     private final FileComponent fileComponent;
     private float start;
     private float end;
-    private final float size;
+    private float size;
     private WaveformPanel waveformPanel;
     private Track track;
 
@@ -36,6 +36,7 @@ public class Clip extends JPanel {
             @Override
             public void componentResized(ComponentEvent e) {
                 updateHeight();
+                setSize((int)file.getDuration()*10, getHeight());
             }
         });
 
@@ -111,7 +112,30 @@ public class Clip extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        this.size = fileComponent.getDuration();
         super.paintComponent(g);
     }
 
+    public void reset() {
+        // Set the new size based on the file component's duration
+        this.size = fileComponent.getDuration();
+        this.start = 0;
+        this.end = size;
+
+        // Update the preferred size of the clip based on the new file component's duration
+        this.setPreferredSize(new Dimension((int) (fileComponent.getDuration() * 10), track.getClipContainer().getHeight()));
+
+        // Resize the waveform panel accordingly
+        waveformPanel.setSize(getWidth(), getHeight()); // Update the size of the waveform panel
+
+        // Revalidate and repaint the Clip to ensure it gets updated in the layout
+        revalidate();
+        repaint();
+
+        // Also notify the parent container to update its layout
+        getParent().revalidate();
+        getParent().repaint();
+        waveformPanel.revalidate();
+        waveformPanel.repaint();
+    }
 }

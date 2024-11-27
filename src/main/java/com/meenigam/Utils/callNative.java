@@ -6,13 +6,15 @@ public class callNative {
     }
 
     public static void main(String[] args) {
-        new callNative().sayHello("woow");
-        callCode("/home/mjthegreat/IIITB/Sem_3/JNI/test.wav", "8");
+//        new callNative().sayHello("aloo", 8, new String[]{"yo", "uo"});
+//        callCode("");
+        callCode("/Users/dheerajmurthy/Desktop/ProjectFiles/finalFile.wav", 8, new String[]{"aloo"});
     }
-    public static void callCode(String message, String operation) {
-        new callNative().sayHello(message + operation);
+
+    public static void callCode(String message, int operation, String[] params) {
+        new callNative().sayHello(message,operation, params);
 
     }
 
-    private native void sayHello(String woow);
+    private native void sayHello(String msg, int operation, String[] params);
 }

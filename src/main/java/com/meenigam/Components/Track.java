@@ -1,6 +1,7 @@
 package com.meenigam.Components;
 
 import com.meenigam.Panels.TrackEditor;
+import com.meenigam.Utils.callNative;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -104,6 +105,7 @@ public class Track extends JPanel {
                             );
                             return;
                         }
+                        String filePath = clips.get(0).getFileComponent().getFilePath();
                         System.out.println(clips.get(0).getFileComponent().getName() + choice);
                         if (selectedOption == null) {
                             JOptionPane.showMessageDialog(
@@ -137,6 +139,8 @@ public class Track extends JPanel {
 
                                     double loop = Integer.parseInt(userInput);
                                     // todo: call native with filename, option, and count
+                                    String[] param = { String.valueOf(loop) };
+                                    callNative.callCode(filePath, 1, param);
 
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -147,10 +151,35 @@ public class Track extends JPanel {
                                             JOptionPane.ERROR_MESSAGE
                                     );
                                 }
-
                                 break;
                             case "Trim":
+                                try {
+                                    ArrayList<String> params = new ArrayList<String>(Arrays.asList("Time stamp", "choose part(1/2)"));
+                                    Map<String, String> input = MultiInputDialog.getUserInputs(params);
 
+                                    if (input != null) {
+                                        double threshold = Double.parseDouble(input.get(params.get(0)));
+                                        double ratio = Double.parseDouble(input.get(params.get(1)));
+                                        String[] param = { String.valueOf(threshold), String.valueOf(ratio) };
+                                        callNative.callCode(filePath, 2, param);
+                                    } else {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+                                } catch (Exception ex) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
                                 break;
                             case "Clip Gain":
                                 try {
@@ -174,6 +203,8 @@ public class Track extends JPanel {
 
                                     double factor = Double.parseDouble(userInput);
                                     // todo: call native with filename, option, and count
+                                    String[] param = { String.valueOf(factor) };
+                                    callNative.callCode(filePath, 3, param);
 
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -208,6 +239,8 @@ public class Track extends JPanel {
 
                                     double factor = Double.parseDouble(userInput);
                                     // todo: call native with filename, option, and count
+                                    String[] param = { String.valueOf(factor) };
+                                    callNative.callCode(filePath, 4, param);
 
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -243,6 +276,8 @@ public class Track extends JPanel {
                                     double duration = Double.parseDouble(userInput);
                                     duration = Math.round(duration * 1000) / 1000.0;
                                     // todo: call native with filename, option, and count
+                                    String[] param = { String.valueOf(duration) };
+                                    callNative.callCode(filePath, 5, param);
 
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -264,6 +299,8 @@ public class Track extends JPanel {
                                     if (input != null) {
                                         double threshold = Double.parseDouble(input.get(params.get(0)));
                                         double ratio = Double.parseDouble(input.get(params.get(1)));
+                                        String[] param = { String.valueOf(threshold), String.valueOf(ratio) };
+                                        callNative.callCode(filePath, 6, param);
                                     } else {
                                         JOptionPane.showMessageDialog(
                                                 null,
@@ -292,6 +329,8 @@ public class Track extends JPanel {
                                     if (input != null) {
                                         double cutoff = Double.parseDouble(input.get(params.get(0)));
                                         String type = input.get(params.get(1));
+                                        String[] param = { String.valueOf(cutoff), type };
+                                        callNative.callCode(filePath, 7, param);
 
                                     } else {
                                         JOptionPane.showMessageDialog(
@@ -314,6 +353,12 @@ public class Track extends JPanel {
 
                                 break;
                             case "Normalize":
+                                try {
+                                    String[] param = {};
+                                    callNative.callCode(filePath, 8, param);
+                                } catch (Exception ex) {
+//                                    JOptionPane.showMessageDialog;
+                                }
 
                                 break;
                             case "Reverb":
@@ -334,6 +379,8 @@ public class Track extends JPanel {
                                         reverbLevelInt = 3;
                                     }
                                     // todo: call native with filename, option, and count
+                                    String[] param = {String.valueOf(reverbLevelInt)};
+                                    callNative.callCode(filePath, 9, param);
 
                                 } catch (Exception E) {
                                     // Show error message if input is not an integer
@@ -360,6 +407,8 @@ public class Track extends JPanel {
                     } else {
                         System.out.println("Selected Option was cancelled");
                     }
+                    repaint();
+                    clips.get(0).reset();
                 }
             }
 

@@ -85,7 +85,7 @@ public class ControlPanel extends JPanel {
                     audioClip.setMicrosecondPosition((long) newClipPosition);
 
                     // Calculate current time (in seconds)
-                    long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000; // Convert microseconds to seconds
+                    long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000 * 5/8; // Convert microseconds to seconds
                     long minutes = currentTimeInSeconds / 60;
                     long seconds = currentTimeInSeconds % 60;
 

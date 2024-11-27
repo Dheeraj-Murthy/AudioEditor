@@ -81,7 +81,7 @@ public class Track extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    ArrayList<String> options = new ArrayList<>(Arrays.asList("Loop", "Trim", "Clip", "Frequency Scaling", "Time Scaling", "Compressing", "AudioFilter", "normalize", "reverb", "superimposition", "do nothing"));
+                    ArrayList<String> options = new ArrayList<>(Arrays.asList("Loop", "Trim", "Clip Gain", "Frequency Scaling", "Time Scaling", "Compressing", "Pitch Filter", "Normalize", "Reverb"));
                     String[] opts = options.toArray(new String[0]);
 
                     JComboBox<String> comboBox = new JComboBox<>(opts);
@@ -129,7 +129,7 @@ public class Track extends JPanel {
                             case "Trim":
 
                                 break;
-                            case "Clip":
+                            case "Clip Gain":
 
                                 break;
                             case "Frequency Scaling":
@@ -141,20 +141,16 @@ public class Track extends JPanel {
                             case "Compressing":
 
                                 break;
-                            case "AudioFilter":
+                            case "Pitch Filter":
 
                                 break;
-                            case "normalize":
+                            case "Normalize":
 
                                 break;
-                            case "reverb":
+                            case "Reverb":
 
                                 break;
-                            case "superimposition":
 
-                                break;
-                            case "do nothing":
-                                break;
                             default:
                                 JOptionPane.showMessageDialog(
                                         null,

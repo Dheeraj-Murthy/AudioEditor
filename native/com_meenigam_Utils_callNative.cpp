@@ -1,4 +1,5 @@
 #include "com_meenigam_Utils_callNative.h"
+#include "main.h"
 #include <iostream>
 using namespace std;
 
@@ -13,6 +14,10 @@ JNIEXPORT void JNICALL Java_com_meenigam_Utils_callNative_sayHello
 
     // Use the native string
     cout << "Received string from Java: " << nativeString << endl;
+    string filePath = nativeString.substr(0, nativeString.length() - 2);
+    int function = reinterpret_cast<int>(nativeString.substr(nativeString.length() - 2, nativeString.length()));
+
+    utilityBelt(function, filePath, filePath);
 
     // Release the memory allocated for the native string
     env->ReleaseStringUTFChars(javaString, nativeString);

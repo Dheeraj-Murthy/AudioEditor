@@ -8,8 +8,7 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 public class Track extends JPanel {
@@ -105,7 +104,6 @@ public class Track extends JPanel {
                             );
                             return;
                         }
-                        // todo: call the jni function with the option and the file name/path
                         System.out.println(clips.get(0).getFileComponent().getName() + choice);
                         if (selectedOption == null) {
                             JOptionPane.showMessageDialog(
@@ -137,7 +135,7 @@ public class Track extends JPanel {
                                         return; // Exit the loop and terminate
                                     }
 
-                                    int loop = Integer.parseInt(userInput);
+                                    double loop = Integer.parseInt(userInput);
                                     // todo: call native with filename, option, and count
 
                                 } catch (NumberFormatException E) {
@@ -155,24 +153,197 @@ public class Track extends JPanel {
 
                                 break;
                             case "Clip Gain":
+                                try {
+                                    String userInput = JOptionPane.showInputDialog(
+                                            null,
+                                            "Please input frequency factor: ",
+                                            "Factor: ",
+                                            JOptionPane.QUESTION_MESSAGE
+                                    );
+
+                                    // Check if the user clicked "Cancel" or closed the dialog
+                                    if (userInput == null) {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+
+                                    double factor = Double.parseDouble(userInput);
+                                    // todo: call native with filename, option, and count
+
+                                } catch (NumberFormatException E) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
                             case "Frequency Scaling":
+                                try {
+                                    String userInput = JOptionPane.showInputDialog(
+                                            null,
+                                            "Please input amplitude factor: ",
+                                            "Factor: ",
+                                            JOptionPane.QUESTION_MESSAGE
+                                    );
+
+                                    // Check if the user clicked "Cancel" or closed the dialog
+                                    if (userInput == null) {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+
+                                    double factor = Double.parseDouble(userInput);
+                                    // todo: call native with filename, option, and count
+
+                                } catch (NumberFormatException E) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
                             case "Time Scaling":
+                                try {
+                                    String userInput = JOptionPane.showInputDialog(
+                                            null,
+                                            "Please input desired duration: ",
+                                            "Duration (in ms): ",
+                                            JOptionPane.QUESTION_MESSAGE
+                                    );
+
+                                    // Check if the user clicked "Cancel" or closed the dialog
+                                    if (userInput == null) {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+
+                                    double duration = Double.parseDouble(userInput);
+                                    duration = Math.round(duration * 1000) / 1000.0;
+                                    // todo: call native with filename, option, and count
+
+                                } catch (NumberFormatException E) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
+
                             case "Compressing":
+                                try {
+                                    ArrayList<String> params = new ArrayList<String>(Arrays.asList("Threshold Frequency", "Compression Ratio"));
+                                    Map<String, String> input = MultiInputDialog.getUserInputs(params);
+
+                                    if (input != null) {
+                                        double threshold = Double.parseDouble(input.get(params.get(0)));
+                                        double ratio = Double.parseDouble(input.get(params.get(1)));
+                                    } else {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+                                } catch (Exception ex) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
                             case "Pitch Filter":
+                                try {
+                                    ArrayList<String> params = new ArrayList<String>(Arrays.asList("Cutoff Frequency", "Filter Type (H/L)"));
+                                    Map<String, String> input = MultiInputDialog.getUserInputs(params);
+
+                                    if (input != null) {
+                                        double cutoff = Double.parseDouble(input.get(params.get(0)));
+                                        String type = input.get(params.get(1));
+
+                                    } else {
+                                        JOptionPane.showMessageDialog(
+                                                null,
+                                                "Input was canceled.",
+                                                "Canceled",
+                                                JOptionPane.WARNING_MESSAGE
+                                        );
+                                        return; // Exit the loop and terminate
+                                    }
+                                } catch (Exception ex) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
                             case "Normalize":
 
                                 break;
                             case "Reverb":
+                                try {
+                                    String[] reverbLevels = {"Low", "Medium", "High"};
+                                    String selectedReverbLevel = (String) JOptionPane.showInputDialog(null,
+                                            "Select Reverb Level:",
+                                            "Reverb Setting",
+                                            JOptionPane.QUESTION_MESSAGE,
+                                            null,
+                                            reverbLevels,
+                                            reverbLevels[1]);
+
+                                    int reverbLevelInt = 1;
+                                    if (selectedReverbLevel.equals("Medium")) {
+                                        reverbLevelInt = 2;
+                                    } else if (selectedReverbLevel.equals("High")) {
+                                        reverbLevelInt = 3;
+                                    }
+                                    // todo: call native with filename, option, and count
+
+                                } catch (Exception E) {
+                                    // Show error message if input is not an integer
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
 
                                 break;
 

@@ -1,25 +1,36 @@
 package com.meenigam.Components;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MultiInputDialog {
 
-    public static Map<String, String> getUserInputs() {
-        JTextField nameField = new JTextField(10);
-        JTextField ageField = new JTextField(10);
-        JTextField cityField = new JTextField(10);
-
+    public static Map<String, String> getUserInputs(ArrayList<String> inputfields) {
+//        JTextField nameField = new JTextField(10);
+//        JTextField ageField = new JTextField(10);
+//        JTextField cityField = new JTextField(10);
+        ArrayList<JTextField> textFields = new ArrayList<>();
         JPanel panel = new JPanel();
-        panel.add(new JLabel("Name:"));
-        panel.add(nameField);
-        panel.add(Box.createHorizontalStrut(15)); // Spacer
-        panel.add(new JLabel("Age:"));
-        panel.add(ageField);
-        panel.add(Box.createHorizontalStrut(15)); // Spacer
-        panel.add(new JLabel("City:"));
-        panel.add(cityField);
+
+        for (String inputs: inputfields) {
+            JTextField cur =new JTextField(10) ;
+            textFields.add(cur);
+            panel.add(new JLabel(inputs));
+            panel.add(cur);
+            panel.add(Box.createHorizontalStrut(15)); // Spacer
+        }
+
+//        panel.add(new JLabel("Name:"));
+//        panel.add(nameField);
+//        panel.add(Box.createHorizontalStrut(15)); // Spacer
+//        panel.add(new JLabel("Age:"));
+//        panel.add(ageField);
+//        panel.add(Box.createHorizontalStrut(15)); // Spacer
+//        panel.add(new JLabel("City:"));
+//        panel.add(cityField);
 
         int result = JOptionPane.showConfirmDialog(
                 null,
@@ -31,9 +42,12 @@ public class MultiInputDialog {
         if (result == JOptionPane.OK_OPTION) {
             // Create a map to store user inputs
             Map<String, String> userInputs = new HashMap<>();
-            userInputs.put("name", nameField.getText());
-            userInputs.put("age", ageField.getText());
-            userInputs.put("city", cityField.getText());
+//            userInputs.put("name", nameField.getText());
+//            userInputs.put("age", ageField.getText());
+//            userInputs.put("city", cityField.getText());
+            for(int i = 0; i < inputfields.size(); i++) {
+                userInputs.put(inputfields.get(i), textFields.get(i).getText());
+            }
             return userInputs;
         }
 
@@ -41,7 +55,8 @@ public class MultiInputDialog {
     }
 
     public static void main(String[] args) {
-        Map<String, String> inputs = MultiInputDialog.getUserInputs();
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Name", "age", "hello"));
+        Map<String, String> inputs = MultiInputDialog.getUserInputs(options);
 
         if (inputs != null) {
             JOptionPane.showMessageDialog(

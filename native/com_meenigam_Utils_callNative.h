@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     com_meenigam_Utils_callNative
  * Method:    sayHello
- * Signature: (Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;I[Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_com_meenigam_Utils_callNative_sayHello
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jint, jobjectArray);
 
 #ifdef __cplusplus
 }

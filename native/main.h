@@ -584,7 +584,7 @@ void applyReverb(string input, string output, int reverbLevel) {
     ofstream outFile(output, ios::binary);
 
     if (!outFile) {
-        std::cerr << "Error opening output file." << std::endl;
+        cerr << "Error opening output file." << endl;
         return;
     }
 

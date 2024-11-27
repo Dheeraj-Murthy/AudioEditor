@@ -14,8 +14,10 @@ public class Clip extends JPanel {
     private float size;
     private WaveformPanel waveformPanel;
     private Track track;
+    private final Clip thisClip;
 
     public Clip(FileComponent file, Track track) {
+        this.thisClip = this;
         this.fileComponent = file;
         this.track = track;
         this.waveformPanel = new WaveformPanel(file.getFile(), this);
@@ -62,6 +64,7 @@ public class Clip extends JPanel {
                     }
                     return;
                 }
+                setPos(location.x*10);
 
                 Rectangle oldBounds = getBounds();
                 setLocation(newLocation);
@@ -113,11 +116,13 @@ public class Clip extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         this.size = fileComponent.getDuration();
+        this.end = this.start + this.size;
         super.paintComponent(g);
     }
 
     public void reset() {
         // Set the new size based on the file component's duration
+        this.fileComponent.resetFile();
         this.size = fileComponent.getDuration();
         this.start = 0;
         this.end = size;

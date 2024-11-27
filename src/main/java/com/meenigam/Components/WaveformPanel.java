@@ -18,7 +18,7 @@ public class WaveformPanel extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setSize(clip.getWidth(), 100); // Set the size of the panel
+        setSize(clip.getWidth(), clip.getHeight()); // Set the size of the panel
 
         // Start a timer to repaint the panel every second
         Timer timer = new Timer(1000, e -> repaint());

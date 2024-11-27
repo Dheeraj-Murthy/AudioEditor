@@ -409,6 +409,8 @@ public class Track extends JPanel {
                     }
                     repaint();
                     clips.get(0).reset();
+                    clips.get(0).repaint();
+
                 }
             }
 

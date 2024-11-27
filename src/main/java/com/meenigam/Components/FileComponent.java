@@ -19,7 +19,7 @@ public class FileComponent extends Button {
     private final boolean isSelected = false;
     private StagingArea stagingArea;
     private final float size;
-    private final File file;
+    private File file;
 
     public FileComponent(String name, String filePath, Frame frame, StagingArea stagingArea) {
         float size1;
@@ -55,6 +55,9 @@ public class FileComponent extends Button {
                         JOptionPane.INFORMATION_MESSAGE);
             }
         });
+    }
+    public void resetFile() {
+        this.file = new File(filePath);
     }
 
     public File getFile() {
@@ -140,4 +143,5 @@ public class FileComponent extends Button {
     public String toString() {
         return Name;
     }
+
 }

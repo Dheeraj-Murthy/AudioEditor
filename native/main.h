@@ -686,7 +686,7 @@ void superimposeWAVFiles(
     cout << "Superimposed WAV file saved to: " << outputFilePath << endl;
 }
 
-void utilityBelt(int input, string inputFilePath, string outputFilePath) {
+void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<string> params) {
     streampos pos;
 
     // cout << "0  : Details\n1  : Loop\n2  : Trim\n3  : Clip Gain\n4  : Frequency Scaling\n5  : Time Scaling\n6  : Compressing\n7  : Audio Filter\n8  : Normalize\n9  : Reverb\n10 : Superimposition\n11 : EXIT" << endl;
@@ -709,14 +709,11 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
 
         case 1: // Loop
             try {
-                int loopCount;
-
-                cout << "Enter the number of loops: ";
-                cin >> loopCount;
+                int loopCount = reinterpret_cast<int>(params[0]);
 
                 // Loop the audio and write to output file
                 loopAudio(inputFilePath, loopCount, outputFilePath);
-                cout << "Successfully created the looped WAV file: " << outputFilePath << endl;
+
             } catch (const exception &e) {
                 cerr << "Error: " << e.what() << endl;
             }
@@ -725,17 +722,8 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
 
         case 2: // Trim
             try {
-                int splitTimeMs;
-                // Paths and split time
-                cout << "Enter the split time in milliseconds: ";
-                cin >> splitTimeMs;
-
-                // Ask the user which part to save
-                cout << "Audio split successfully. Which part would you like to save(choose 1 or 2)?\n";
-                cout << "1. Left part\n";
-                cout << "2. Right part\n";
-                int choice;
-                cin >> choice;
+                int splitTimeMs = reinterpret_cast<int>(params[0]);
+                int choice = reinterpret_cast<int>(params[1]);
 
                 // Trim the audio file
                 trimAudio(inputFilePath, splitTimeMs, outputFilePath, choice);
@@ -748,10 +736,7 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
 
         case 3: // amp
 
-            double factor;
-
-            cout << "Enter amplitude factor: ";
-            cin >> factor;
+            double factor = reinterpret_cast<double>(params[0]);
 
             try {
                 ampScale(inputFilePath, outputFilePath, factor);
@@ -766,13 +751,9 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
         case 4: // Frequency manupilator
 
             try {
-                float manipulationFactor;
-                cout << "Enter the manipulation factor: ";
-                cin >> manipulationFactor;
+                float manipulationFactor = reinterpret_cast<double>(params[0]);
 
                 frequencyManipulator(inputFilePath, outputFilePath, manipulationFactor);
-
-                cout << "File saved successfully." << endl;
 
             } catch (const exception &e) {
                 cerr << "Error: " << e.what() << endl;
@@ -784,13 +765,9 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
 
             try {
 
-                float timeToBeScaled;
-                cout << "Enter the Time to which Scaling has to be done(in milliseconds): ";
-                cin >> timeToBeScaled;
+                float timeToBeScaled = reinterpret_cast<float>(params[0]);
 
                 frequencyManipulator(inputFilePath, outputFilePath, timeToBeScaled);
-
-                cout << "File saved successfully." << endl;
 
             } catch (const exception &e) {
                 cerr << "Error: " << e.what() << endl;
@@ -800,25 +777,15 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
 
         case 6: // Compressor
 
-            double cutoffFrequency, threshold, ratio;
-            char filterType;
+            double threshold = reinterpret_cast<double>(params[0]);
+            double ratio = reinterpret_cast<double>(params[1]);
 
-            // double attack = 0.01;
-            // double release = 0.1;
-            cout << "Threshold (It’s too loud; I need to turn it down.)(0.5 for 50% of maximum volume): ";
-            cin >> threshold;
-            cout << "Ratio (How much you turn it down when it gets too loud)(4.0 for 1/4 of initail vol):";
-            cin >> ratio;
             applyCompression(inputFilePath, outputFilePath, threshold, ratio);
             break;
 
         case 7: // audiofilter
-            // cutoffFrequency;
-            // filterType;
-            cout << "Enter cutoff Freaquency";
-            cin >> cutoffFrequency;
-            cout << "Enter filter type ('L' for low-pass, 'H' for high-pass): ";
-            cin >> filterType;
+            double cutoffFrequency = reinterpret_cast<double>(params[0]);
+            char filterType = reinterpret_cast<char>(params[1]);
 
             try {
                 if (filterType == 'L' || filterType == 'l') {
@@ -845,9 +812,7 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath) {
 
         case 9: // reverb
 
-            int reverbLevel;
-            cout << "Enter reverb level (1 - low, 2 - medium, 3 - high): ";
-            cin >> reverbLevel;
+            int reverbLevel = reinterpret_cast<int>(params[0]);
 
             try {
                 // Apply reverb

@@ -75,7 +75,7 @@ public class Track extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    ArrayList<String> options = new ArrayList<>(Arrays.asList("Loop", "Trim", "Clip Gain", "Frequency Scaling", "Time Scaling", "Compressing", "Pitch Filter", "Normalize", "Reverb"));
+                    ArrayList<String> options = new ArrayList<>(Arrays.asList("Details", "Loop", "Trim", "Clip Gain", "Frequency Scaling", "Time Scaling", "Compressing", "Pitch Filter", "Normalize", "Reverb"));
                     String[] opts = options.toArray(new String[0]);
 
                     JComboBox<String> comboBox = new JComboBox<>(opts);
@@ -117,6 +117,20 @@ public class Track extends JPanel {
                             return;
                         }
                         switch (selectedOption) {
+                            case "Details":
+                                try {
+                                    String[] param = {};
+                                    callNative.callCode(filePath, 0, param);
+                                } catch (Exception E) {
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Invalid input. Please enter a valid integer.",
+                                            "Error",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
+
+                                break;
                             case "Loop":
                                 try {
                                     String userInput = JOptionPane.showInputDialog(

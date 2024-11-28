@@ -103,14 +103,32 @@ public class Frame extends JFrame {
         JPanel titleBar = new JPanel(new BorderLayout());
         titleBar.setBackground(new Color(45, 45, 45));
 
+        JPanel container = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        container.setBackground(new Color(0, 0, 0, 0));
+
         JButton setHome = new JButton("Project");
         setHome.setForeground(Color.white);
         setHome.setBackground(new Color(0, 0, 0));
         setHome.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY), new EmptyBorder(10, 20, 10, 20)));
         setHome.setFocusPainted(false);
         setHome.setFont(new Font("Arial", Font.BOLD, 14));
-        titleBar.add(setHome, BorderLayout.WEST);
+        container.add(setHome);
         setHome.addActionListener(e -> HomePathDialog());
+
+//        JPanel spacer = new JPanel(); // Adjust the number of spaces for desired spacing
+//        container.add(spacer);
+        container.add(Box.createRigidArea(new Dimension(10, 3)));
+
+        JButton export = new JButton("Export");
+        export.setForeground(Color.white);
+        export.setBackground(new Color(0, 0, 0));
+        export.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY), new EmptyBorder(10, 20, 10, 20)));
+        export.setFocusPainted(false);
+        export.setFont(new Font("Arial", Font.BOLD, 14));
+        container.add(export);
+        export.addActionListener(e -> SavePathDialog());
+
+        titleBar.add(container, BorderLayout.WEST);
 
 
         JLabel titleLabel = new JLabel("Audio Editor", JLabel.CENTER);
@@ -154,8 +172,6 @@ public class Frame extends JFrame {
     }
 
     private void HomePathDialog() {
-
-
         JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         chooser.setDialogTitle("Choose Parent Directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -165,6 +181,20 @@ public class Frame extends JFrame {
             String path = chooser.getSelectedFile().getAbsolutePath();
             manager.setHomePath(path);
             JOptionPane.showMessageDialog(this, "Project directory set to:\n" + path,
+                    "Directory Selected", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void SavePathDialog() {
+        JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        chooser.setDialogTitle("Choose export location");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int result = chooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            manager.setSavePath(path);
+            JOptionPane.showMessageDialog(this, "File saved to to:\n" + path,
                     "Directory Selected", JOptionPane.INFORMATION_MESSAGE);
         }
     }

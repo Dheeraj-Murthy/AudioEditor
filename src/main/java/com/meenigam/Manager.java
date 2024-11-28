@@ -9,6 +9,7 @@ import java.io.IOException;
 public class Manager {
     Frame frame;
     private String HomePath = "Desktop";
+    private String SavePath = "Desktop";
     private String ProjectFolder = "ProjectFiles";
     private String finalFile = "finalFile.wav";
     private String userHome = System.getProperty("user.home");
@@ -37,4 +38,5 @@ public class Manager {
     public void setHomePath(String homePath) {
         this.HomePath = homePath;
     }
+    public void setSavePath(String savePath) { this.SavePath = savePath; }
 }

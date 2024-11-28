@@ -17,7 +17,7 @@ public class WavFileCreator {
         // Define the audio format: 44100 Hz, 16-bit, mono, signed, little-endian
         float sampleRate = 44100.0f;
         int sampleSizeInBits = 16;
-        int channels = 1;
+        int channels = 2;
         boolean signed = true;
         boolean bigEndian = false;
 
@@ -54,7 +54,7 @@ public class WavFileCreator {
         try {
             // Specify the output file path and duration
             String filePath = "blank.wav";
-            int durationInSeconds = 10; // Create a 10-second blank .wav file
+            int durationInSeconds = 10; // Create a 1000-second blank .wav file
 
             createBlankWav(filePath, durationInSeconds);
         } catch (IOException e) {

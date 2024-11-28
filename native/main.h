@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <string.h>
 using namespace std;
 
 // Struct to store WAV file header information
@@ -596,11 +597,7 @@ void applyReverb(string input, string output, int reverbLevel) {
     return;
 }
 
-void superimposeWAVFiles(
-    const string &baseFilePath,
-    const string &overlayFilePath,
-    const string &outputFilePath,
-    int offsetMs) {
+void superimposeWAVFiles(const string &baseFilePath, const string &overlayFilePath, const string &outputFilePath, int offsetMs) {
     WAVHeader baseHeader, overlayHeader;
 
     // Read the base WAV file
@@ -686,14 +683,57 @@ void superimposeWAVFiles(
     cout << "Superimposed WAV file saved to: " << outputFilePath << endl;
 }
 
+void blankWAV(const string &filename, double duration, int sample_rate = 44100, int num_channels = 2, int bits_per_sample = 16) {
+
+    int num_samples = duration * sample_rate;
+    int data_size = num_samples * num_channels * bits_per_sample / 8;
+
+    WAVHeader header;
+    memcpy(header.riffHeader, "RIFF", 4);
+    header.chunkSize = 36 + data_size;
+    memcpy(header.waveHeader, "WAVE", 4);
+    memcpy(header.fmtHeader, "fmt ", 4);
+    header.fmtChunkSize = 16;
+    header.audioFormat = 1;
+    header.numChannels = num_channels;
+    header.sampleRate = sample_rate;
+    header.byteRate = sample_rate * num_channels * bits_per_sample / 8;
+    header.blockAlign = num_channels * bits_per_sample / 8;
+    header.bitsPerSample = bits_per_sample;
+    memcpy(header.dataHeader, "data", 4);
+    header.dataSize = data_size;
+
+    ofstream file(filename, ios::binary);
+    file.write(reinterpret_cast<const char *>(&header), sizeof(header));
+
+    char *data = new char[data_size];
+    memset(data, 0, data_size);
+    file.write(data, data_size);
+    delete[] data;
+
+    file.close();
+    return;
+}
+
 void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<string> params) {
     streampos pos;
 
-    cout << "0  : Details\n1  : Loop\n2  : Trim\n3  : Clip Gain\n4  : Frequency Scaling\n5  : Time Scaling\n6  : Compressing\n7  : Audio Filter\n8  : Normalize\n9  : Reverb\n10 : Superimposition\n11 : EXIT" << endl;
-    cout << "Enter function: ";
+//    cout << "0  : Details\n1  : Loop\n2  : Trim\n3  : Clip Gain\n4  : Frequency Scaling\n5  : Time Scaling\n6  : Compressing\n7  : Audio Filter\n8  : Normalize\n9  : Reverb\n10 : Superimposition\n11 : EXIT" << endl;
+//    cout << "Enter function: ";
     // cin >> input;
 
     switch (input) {
+        case -1:
+            try {
+                float dur = stof(params[0]);
+                cout << outputFilePath << dur << endl;
+                blankWAV(outputFilePath, dur);
+            } catch (const exception &e) {
+                cerr << "Error: " << e.what() << endl;
+            }
+
+            break;
+
         case 0: // Details
             try {
                 WAVHeader header;

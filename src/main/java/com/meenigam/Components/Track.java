@@ -6,6 +6,7 @@ import com.meenigam.Utils.callNative;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,19 +33,20 @@ public class Track extends JPanel {
         setBackground(backgroundColor);
 
         // Combine an EmptyBorder (for padding) with the existing border
-        Border padding = BorderFactory.createEmptyBorder(10, 10, 10, 10); // top, left, bottom, right
+        Border padding = BorderFactory.createEmptyBorder(0, 10, 10, 10); // top, left, bottom, right
         Border lineBorder = BorderFactory.createLineBorder(new Color(70, 70, 70));
         setBorder(new CompoundBorder(lineBorder, padding));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setMaximumSize(new Dimension(10000, 10));
+        topPanel.setMaximumSize(new Dimension(10000, 5));
         topPanel.setBackground(new Color(0, 0, 0, 0));
 
         JLabel titleLabel = new JLabel(title);
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         titleLabel.setForeground(foreground);
+        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 10f));
         topPanel.add(titleLabel, BorderLayout.WEST);
 
         JButton buildButton = new JButton(":");

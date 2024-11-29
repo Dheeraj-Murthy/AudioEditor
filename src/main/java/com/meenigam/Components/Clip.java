@@ -58,29 +58,25 @@ public class Clip extends JPanel {
                 newLocation.translate(e.getX() - offset.x, 0);
                 if (isOutOfBounds(newLocation)) {
                     if (isLeft(newLocation)) {
-                        setLocation(new Point(1, location.y));
+                        setLocation(new Point(0, location.y));
                     } else if (isRight(newLocation)) {
                         setLocation(new Point(track.getClipContainer().getWidth() - (int) size * 10, location.y));
+                    } else {
+                        setLocation(new Point(location.x, location.y));
                     }
                     return;
                 }
                 setPos(location.x * 10);
-
-                Rectangle oldBounds = getBounds();
+                System.out.println("current location " + location.x);
                 setLocation(newLocation);
-                Rectangle newBounds = getBounds();
-
-                getParent().repaint(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
-                getParent().repaint(newBounds.x, newBounds.y, newBounds.width, newBounds.height);
             }
         };
-
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseHandler);
     }
 
     public String getPath() { return this.fileComponent.getFilePath(); }
-    public float getStart() { return (this.start * 1000); }
+    public float getStart() { return (this.start *10); }
     public float getEnd() { return this.end; }
 
     private void updateHeight() {
@@ -94,7 +90,7 @@ public class Clip extends JPanel {
         int clipRight = clipLeft + (int) (size * 10);  // Right edge of the clip, based on size and scale
 
         // Check if the clip is out of bounds on the left or right
-        return clipLeft < 0 || clipRight > track.getWidth();
+        return clipLeft < -1 || clipRight > track.getWidth()+1;
     }
 
     private boolean isLeft(Point location) {

@@ -95,7 +95,6 @@ public class ControlPanel extends JPanel {
                     // Calculate current time (in seconds)
                     long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000 * 5 / 8; // Convert microseconds to seconds
                     double curTime = (frame.getTrackEditor().getSliderPos() / 10 ) * 30/31;
-                    System.out.println("Current Time: " + currentTimeInSeconds + " slider time " + curTime);
                     long minutes = (long) (curTime / 60);
                     long seconds = (long) (curTime % 60);
 
@@ -129,17 +128,13 @@ public class ControlPanel extends JPanel {
         ));
     }
 
-    private void loadAudio(String filePath) {
+    public void loadAudio(String filePath) {
         try {
             File audioFile = new File(filePath);
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             audioClip = AudioSystem.getClip();
             audioClip.open(audioStream);
 
-            // Enable the slider after loading audio
-//            progressSlider.setEnabled(true);
-
-            // Timer for updating slider progress
             progressTimer = new Timer(100, e -> updateSlider());
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             JOptionPane.showMessageDialog(this, "Error loading audio file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

@@ -26,7 +26,6 @@ public class TrackEditor extends JPanel {
             repaint();
         });
 
-
         // Add the slider to the panel
         this.add(slider, BorderLayout.NORTH);
 
@@ -35,7 +34,6 @@ public class TrackEditor extends JPanel {
             Track track = new Track("Track" + i, tracks, this);
             this.add(track);
         }
-
         repaint();
     }
 
@@ -105,18 +103,6 @@ public class TrackEditor extends JPanel {
             // You can customize the thumb's size
             return new Dimension(20, 20); // Example thumb size (width, height)
         }
-    }
-
-    private void logSliderPos() {
-        // Get the slider's current value and calculate its proportional position
-        double thumbPosition = (slider.getValue() * (slider.getWidth() / (double) slider.getMaximum()));
-
-        // Add the slider's x-offset relative to the panel
-        Point sliderLocation = slider.getLocation();
-        sliderPos = thumbPosition + sliderLocation.x;
-
-        // Debug output to print the thumb position from the start of the panel
-        System.out.println("Thumb position from the start of the panel: " + sliderPos);
     }
 
     private void setSliderPos() {

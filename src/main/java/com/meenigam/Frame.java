@@ -31,6 +31,7 @@ public class Frame extends JFrame {
     private boolean maximized = false;
     private Dimension previousSize;
     private Point previousLocation;
+    private ControlPanel controlPanel;
 
     private final StagingArea stagingArea;
     private final TrackEditor trackEditor;
@@ -42,6 +43,7 @@ public class Frame extends JFrame {
 
         // Add control panel at the bottom
         ControlPanel controlPanel = new ControlPanel(this, manager.finalFilePath);
+        this.controlPanel = controlPanel;
 
         this.slider = controlPanel.getProgressSlider();
 
@@ -246,9 +248,11 @@ public class Frame extends JFrame {
             ArrayList<Clip> clips = track.getClips();
             for (Clip clip : clips) {
                 String[] param = {clip.getPath(), String.valueOf(clip.getStart())};
+                System.out.println( "clip.getStanrt: " + clip.getStart() + " after multiplication: " + param[1]);
                 callNative.callCode(manager.finalFilePath, 10, param);
             }
         }
+        controlPanel.loadAudio(manager.finalFilePath);
     }
 
     private void export(Path oldLoc, Path newLoc) throws IOException {

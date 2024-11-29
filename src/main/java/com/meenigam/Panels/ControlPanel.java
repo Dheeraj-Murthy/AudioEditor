@@ -81,11 +81,11 @@ public class ControlPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 if (audioClip != null) {
                     int sliderValue = progressSlider.getValue();
-                    double newClipPosition =  (sliderValue / 100.0) * audioClip.getMicrosecondLength();
+                    double newClipPosition = (sliderValue / 100.0) * audioClip.getMicrosecondLength();
                     audioClip.setMicrosecondPosition((long) newClipPosition);
 
                     // Calculate current time (in seconds)
-                    long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000 * 5/8; // Convert microseconds to seconds
+                    long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000 * 5 / 8; // Convert microseconds to seconds
                     long minutes = currentTimeInSeconds / 60;
                     long seconds = currentTimeInSeconds % 60;
 

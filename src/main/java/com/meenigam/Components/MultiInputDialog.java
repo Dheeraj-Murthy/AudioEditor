@@ -15,8 +15,8 @@ public class MultiInputDialog {
         ArrayList<JTextField> textFields = new ArrayList<>();
         JPanel panel = new JPanel();
 
-        for (String inputs: inputfields) {
-            JTextField cur =new JTextField(10) ;
+        for (String inputs : inputfields) {
+            JTextField cur = new JTextField(10);
             textFields.add(cur);
             panel.add(new JLabel(inputs));
             panel.add(cur);
@@ -45,7 +45,7 @@ public class MultiInputDialog {
 //            userInputs.put("name", nameField.getText());
 //            userInputs.put("age", ageField.getText());
 //            userInputs.put("city", cityField.getText());
-            for(int i = 0; i < inputfields.size(); i++) {
+            for (int i = 0; i < inputfields.size(); i++) {
                 userInputs.put(inputfields.get(i), textFields.get(i).getText());
             }
             return userInputs;

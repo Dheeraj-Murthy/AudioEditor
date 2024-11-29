@@ -1,12 +1,10 @@
 package com.meenigam;
 
-import com.meenigam.Components.WavFileCreator;
 import com.meenigam.Utils.callNative;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 public class Manager {
     Frame frame;
@@ -32,7 +30,7 @@ public class Manager {
         }
         File newFile = new File(newFolder, finalFile);
 //        WavFileCreator.createBlankWav(newFile.getAbsolutePath(), 130);
-        String[] param = { String.valueOf(900) };
+        String[] param = {String.valueOf(900)};
         callNative.callCode(newFile.getAbsolutePath(), -1, param);
         System.out.println(newFile.getAbsolutePath());
         finalFilePath = newFile.getAbsolutePath();
@@ -40,8 +38,13 @@ public class Manager {
         frame = new Frame(this);
     }
 
+    public String getSavePath() { return this.SavePath; }
+    public String getTempLocation() { return (this.HomePath + '/' + this.finalFile); }
     public void setHomePath(String homePath) {
         this.HomePath = homePath;
     }
-    public void setSavePath(String savePath) { this.SavePath = savePath; }
+    public void setSavePath(String savePath) {
+        this.SavePath = savePath;
+    }
+
 }

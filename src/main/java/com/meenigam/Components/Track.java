@@ -9,8 +9,10 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Track extends JPanel {
     private final Color backgroundColor = new Color(50, 50, 50);
@@ -75,7 +77,7 @@ public class Track extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    ArrayList<String> options = new ArrayList<>(Arrays.asList("Details", "Loop", "Trim", "Clip Gain", "Frequency Scaling", "Time Scaling", "Compressing", "Pitch Filter", "Normalize", "Reverb"));
+                    ArrayList<String> options = new ArrayList<>(Arrays.asList("Details", "Loop", "Trim", "Clip Gain", "Frequency Scaling", "Time Scaling", "Compressing", "Pitch Filter", "Normalize", "Reverb", "Delete Clip"));
                     String[] opts = options.toArray(new String[0]);
 
                     JComboBox<String> comboBox = new JComboBox<>(opts);
@@ -150,7 +152,7 @@ public class Track extends JPanel {
                                     }
                                     double loop = Integer.parseInt(userInput);
                                     // todo: call native with filename, option, and count
-                                    String[] param = { String.valueOf(loop) };
+                                    String[] param = {String.valueOf(loop)};
                                     callNative.callCode(filePath, 1, param);
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -169,7 +171,7 @@ public class Track extends JPanel {
                                     if (input != null) {
                                         double threshold = Double.parseDouble(input.get(params.get(0)));
                                         double ratio = Double.parseDouble(input.get(params.get(1)));
-                                        String[] param = { String.valueOf(threshold), String.valueOf(ratio) };
+                                        String[] param = {String.valueOf(threshold), String.valueOf(ratio)};
                                         callNative.callCode(filePath, 2, param);
                                     } else {
                                         JOptionPane.showMessageDialog(
@@ -210,7 +212,7 @@ public class Track extends JPanel {
                                     }
                                     double factor = Double.parseDouble(userInput);
                                     // todo: call native with filename, option, and count
-                                    String[] param = { String.valueOf(factor) };
+                                    String[] param = {String.valueOf(factor)};
                                     callNative.callCode(filePath, 3, param);
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -242,7 +244,7 @@ public class Track extends JPanel {
                                     }
                                     double factor = Double.parseDouble(userInput);
                                     // todo: call native with filename, option, and count
-                                    String[] param = { String.valueOf(factor) };
+                                    String[] param = {String.valueOf(factor)};
                                     callNative.callCode(filePath, 4, param);
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -275,7 +277,7 @@ public class Track extends JPanel {
                                     double duration = Double.parseDouble(userInput);
                                     duration = Math.round(duration * 1000) / 1000.0;
                                     // todo: call native with filename, option, and count
-                                    String[] param = { String.valueOf(duration) };
+                                    String[] param = {String.valueOf(duration)};
                                     callNative.callCode(filePath, 5, param);
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
@@ -294,7 +296,7 @@ public class Track extends JPanel {
                                     if (input != null) {
                                         double threshold = Double.parseDouble(input.get(params.get(0)));
                                         double ratio = Double.parseDouble(input.get(params.get(1)));
-                                        String[] param = { String.valueOf(threshold), String.valueOf(ratio) };
+                                        String[] param = {String.valueOf(threshold), String.valueOf(ratio)};
                                         callNative.callCode(filePath, 6, param);
                                     } else {
                                         JOptionPane.showMessageDialog(
@@ -324,7 +326,7 @@ public class Track extends JPanel {
                                     if (input != null) {
                                         double cutoff = Double.parseDouble(input.get(params.get(0)));
                                         String type = input.get(params.get(1));
-                                        String[] param = { String.valueOf(cutoff), type };
+                                        String[] param = {String.valueOf(cutoff), type};
                                         callNative.callCode(filePath, 7, param);
 
                                     } else {
@@ -388,6 +390,16 @@ public class Track extends JPanel {
                                 }
 
                                 break;
+                            case "Delete Clip":
+                                try {
+                                    System.out.println("calling delete");
+                                    clips.removeFirst();
+                                    revalidate();
+                                    repaint();
+                                } catch (Exception E) {
+                                    System.out.println(Arrays.toString(E.getStackTrace()));
+                                }
+                                break;
 
                             default:
                                 JOptionPane.showMessageDialog(
@@ -402,10 +414,17 @@ public class Track extends JPanel {
                     } else {
                         System.out.println("Selected Option was cancelled");
                     }
+                    resetClipContainer();
+                    if (clips.isEmpty()) {
+                        return;
+                    }
+                    Clip clip = clips.getFirst();
+                    clips.removeFirst();
+                    setClip(clip.getFileComponent());
+                    resetClipContainer();
                     repaint();
-                    clips.get(0).reset();
-                    clips.get(0).repaint();
-
+                    clips.getFirst().reset();
+                    clips.getFirst().repaint();
                 }
             }
 
@@ -430,7 +449,7 @@ public class Track extends JPanel {
     }
 
     public void setClip(FileComponent fileComponent) {
-        Clip clip = new Clip(fileComponent, this);
+        Clip clip = new Clip(new FileComponent(fileComponent), this);
         clips.add(clip);
         clipContainer.add(clip); // Add to clip container for horizontal layout
         revalidate();
@@ -440,6 +459,14 @@ public class Track extends JPanel {
 
     public JPanel getClipContainer() {
         return clipContainer;
+    }
+    public void resetClipContainer() {
+        clipContainer.removeAll();
+        for(Clip clip: clips) {
+            clipContainer.add(clip);
+        }
+        revalidate();
+        repaint();
     }
 
     public String toString() {

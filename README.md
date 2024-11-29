@@ -1,12 +1,19 @@
 # Audio Editor Project: **The Kitchen**
 
 ## **Overview**
-This project is a feature-rich **Audio Editor** that combines Java's user-friendly interface capabilities with C++'s performance-oriented audio processing power. By leveraging the **Java Native Interface (JNI)**, the application bridges the gap between platform-independent UI development and high-performance native processing. It supports essential functionalities like **amplitude scaling, frequency scaling, clipping, looping, reverb, and multi-track editing**, among others.
+
+This project is a feature-rich **Audio Editor** that combines Java's user-friendly interface capabilities with C++'s
+performance-oriented audio processing power. By leveraging the **Java Native Interface (JNI)**, the application bridges
+the gap between platform-independent UI development and high-performance native processing. It supports essential
+functionalities like **amplitude scaling, frequency scaling, clipping, looping, reverb, and multi-track editing**, among
+others.
 
 ---
 
 ## **Features**
+
 ### **Core Functionalities**
+
 - **Amplitude Scaling**: Modify the amplitude of audio clips.
 - **Compression**: Apply dynamic range compression with customizable thresholds and ratios.
 - **Frequency Scaling**: Adjust pitch and frequency for audio manipulation.
@@ -19,6 +26,7 @@ This project is a feature-rich **Audio Editor** that combines Java's user-friend
 - **Multi-Track Editing**: Layer multiple audio files and edit them in parallel.
 
 ### **Additional Capabilities**
+
 - Visual waveform display (amplitude vs. time graph).
 - Cross-platform compatibility (Windows, macOS, Linux).
 - Responsive and intuitive Java Swing-based UI.
@@ -27,7 +35,9 @@ This project is a feature-rich **Audio Editor** that combines Java's user-friend
 ---
 
 ## **Getting Started**
+
 ### **System Requirements**
+
 - **Frontend**: Java (Swing)
 - **Backend**: C++
 - **Middleware**: JNI for communication between Java and C++
@@ -43,11 +53,14 @@ This project is a feature-rich **Audio Editor** that combines Java's user-friend
 ---
 
 ## **Installation Guide**
+
 ### Clone the Repository
+
 Run the following command:  
     `git@github.com:Dheeraj-Murthy/AudioEditor.git`
 
 ### Setup
+
 1. **Java & C++**: Ensure you have OpenJDK and g++ installed.
 2. **Compile Native Code**:
     - On **Ubuntu** or **macOS**:  
@@ -63,6 +76,7 @@ Run the following command:
 ---
 
 ## **Workflow**
+
 1. **UI Development**:
     - Build the frontend in Java using Swing.
     - Create user-friendly controls for playback, amplitude scaling, and clip editing.
@@ -76,12 +90,14 @@ Run the following command:
 ---
 
 ## **Folder Structure**
+
 - **native/**: Contains the C++ implementation of audio editing functions.
 - **src/main/java/**: Contains all Java code, including the UI logic.
 
 ---
 
 ## **Testing**
+
 - **Unit Testing**:
     - Validate individual functionalities like amplitude scaling, trimming, and looping.
 - **Integration Testing**:
@@ -94,6 +110,7 @@ Run the following command:
 ---
 
 ## **Contributors**
+
 - **M S Dheeraj Murthy** (IMT2023552)  
   Email: ms.dheerajmurthy@iiitb.ac.in
 - **Mathew Joseph** (IMT2023008)  
@@ -108,4 +125,5 @@ Run the following command:
 ---
 
 ## **License**
+
 This project is licensed under the MIT License. Refer to the LICENSE file for more details.

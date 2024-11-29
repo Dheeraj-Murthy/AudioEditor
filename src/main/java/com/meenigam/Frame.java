@@ -14,6 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class Frame extends JFrame {
 
@@ -113,7 +117,7 @@ public class Frame extends JFrame {
         setHome.setFocusPainted(false);
         setHome.setFont(new Font("Arial", Font.BOLD, 14));
         container.add(setHome);
-        setHome.addActionListener(e -> HomePathDialog());
+        setHome.addActionListener(e -> homePathDialog());
 
 //        JPanel spacer = new JPanel(); // Adjust the number of spaces for desired spacing
 //        container.add(spacer);
@@ -126,7 +130,24 @@ public class Frame extends JFrame {
         export.setFocusPainted(false);
         export.setFont(new Font("Arial", Font.BOLD, 14));
         container.add(export);
-        export.addActionListener(e -> SavePathDialog());
+        export.addActionListener(e -> {
+            try {
+                exportPathDialog();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        container.add(Box.createRigidArea(new Dimension(10, 3)));
+
+        JButton saveButton = new JButton("Save");
+        saveButton.setForeground(Color.white);
+        saveButton.setBackground(new Color(0, 0, 0));
+        saveButton.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY), new EmptyBorder(10, 20, 10, 20)));
+        saveButton.setFocusPainted(false);
+        saveButton.setFont(new Font("Arial", Font.BOLD, 14));
+        container.add(saveButton);
+        saveButton.addActionListener(e -> updateMaster());
 
         titleBar.add(container, BorderLayout.WEST);
 
@@ -171,7 +192,7 @@ public class Frame extends JFrame {
         return titleBar;
     }
 
-    private void HomePathDialog() {
+    private void homePathDialog() {
         JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         chooser.setDialogTitle("Choose Parent Directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -185,7 +206,7 @@ public class Frame extends JFrame {
         }
     }
 
-    private void SavePathDialog() {
+    private void exportPathDialog() throws IOException {
         JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         chooser.setDialogTitle("Choose export location");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -197,6 +218,30 @@ public class Frame extends JFrame {
             JOptionPane.showMessageDialog(this, "File saved to to:\n" + path,
                     "Directory Selected", JOptionPane.INFORMATION_MESSAGE);
         }
+
+        String userInput = JOptionPane.showInputDialog(
+                null,
+                "Please enter name of audio file: ",
+                "Name: ",
+                JOptionPane.QUESTION_MESSAGE
+        );
+        if (userInput != null) {
+            manager.setSavePath(manager.getSavePath() + "/" + userInput + ".wav");
+        } else {
+            manager.setSavePath(manager.getSavePath() + "/finalAudio.wav");
+        }
+        System.out.println(manager.getSavePath());
+        export(Path.of(manager.getTempLocation()), Path.of(manager.getSavePath()));
+    }
+
+    private void updateMaster() {
+        //todo
+    }
+
+    private void export(Path oldLoc, Path newLoc) throws IOException {
+        Path oldFolder = oldLoc.getParent();
+
+        Files.copy(oldLoc, newLoc, StandardCopyOption.REPLACE_EXISTING);
     }
 
     private void toggleMaximize() {

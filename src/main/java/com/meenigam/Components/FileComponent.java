@@ -4,7 +4,10 @@ package com.meenigam.Components;
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,18 +21,55 @@ public class FileComponent extends Button {
     private final String filePath;
     private final boolean isSelected = false;
     private StagingArea stagingArea;
-    private final float size;
+    private float size;
     private File file;
-
+    private Frame frame;
     public FileComponent(String name, String filePath, Frame frame, StagingArea stagingArea) {
         float size1;
         this.Name = name;
+        this.frame = frame;
         this.filePath = filePath;
         this.stagingArea = stagingArea;
 
         // Calculate the duration of the wav file
         File file = new File(filePath);
         this.file = file;
+        resetDuration();
+
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button Clicked");
+                JOptionPane.showMessageDialog(frame,
+                        "You clicked: " + name,
+                        "File Component Clicked",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+    }
+    public FileComponent(FileComponent fileComponent) {
+        this.Name = fileComponent.Name;
+        this.filePath = fileComponent.filePath;
+        this.stagingArea = fileComponent.stagingArea;
+        Frame frame = fileComponent.frame;
+        float size1;
+        File file = new File(filePath);
+        this.file = file;
+        resetDuration();
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button Clicked");
+                JOptionPane.showMessageDialog(frame,
+                        "You clicked: " + fileComponent.Name,
+                        "File Component Clicked",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+    }
+
+    private void resetDuration() {
+        float size1;
         if (file.exists() && file.isFile()) {
             try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file)) {
                 AudioFormat format = audioInputStream.getFormat();
@@ -45,19 +85,11 @@ public class FileComponent extends Button {
         }
 
         this.size = size1;
-        this.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Button Clicked");
-                JOptionPane.showMessageDialog(frame,
-                        "You clicked: " + name,
-                        "File Component Clicked",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
     }
+
     public void resetFile() {
         this.file = new File(filePath);
+        resetDuration();
     }
 
     public File getFile() {

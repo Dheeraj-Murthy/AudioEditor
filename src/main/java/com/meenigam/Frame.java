@@ -69,6 +69,7 @@ public class Frame extends JFrame {
         stagingScrollPane.addMouseListener(new PanelFocusAdapter(stagingScrollPane, this));
         trackScrollPane.addMouseListener(new PanelFocusAdapter(trackScrollPane, this));
         trackScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        trackScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         reset(this);
 
@@ -192,6 +193,9 @@ public class Frame extends JFrame {
         return titleBar;
     }
 
+    public TrackEditor getTrackEditor() {
+        return trackEditor;
+    }
     private void homePathDialog() {
         JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         chooser.setDialogTitle("Choose Parent Directory");

@@ -67,13 +67,21 @@ public class ControlPanel extends JPanel {
 
         // Add the timer label to the right end of the buttonPanel
         buttonPanel.add(timerLabel, BorderLayout.EAST);
+        loadAudio(finalFilePath);  // Specify the audio file path
 
-        // Add the progress slider
-        progressSlider = new JSlider();
+// Add the progress slider
+        progressSlider = new JSlider(0, (int) (audioClip.getMicrosecondLength() / 1000_000), 0);
         progressSlider.setBackground(new Color(45, 45, 45));
         progressSlider.setForeground(Color.WHITE);
         progressSlider.setValue(0);
         progressSlider.setEnabled(true);
+
+// Calculate slider width (10x duration of the clip in seconds)
+        long clipDurationInSeconds = audioClip.getMicrosecondLength() / 1_000_000; // Convert microseconds to seconds
+        int sliderWidth = (int) clipDurationInSeconds*10;
+
+// Set the slider's preferred size
+        progressSlider.setPreferredSize(new Dimension(sliderWidth, 20)); // Width: 10x duration, Height: 20
 
         // Add listener to handle user seeking
         progressSlider.addMouseListener(new MouseAdapter() {
@@ -86,12 +94,14 @@ public class ControlPanel extends JPanel {
 
                     // Calculate current time (in seconds)
                     long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000 * 5 / 8; // Convert microseconds to seconds
-                    long minutes = currentTimeInSeconds / 60;
-                    long seconds = currentTimeInSeconds % 60;
+                    double curTime = frame.getTrackEditor().getSliderPos() /10;
+                    System.out.println("Current Time: " + currentTimeInSeconds + " slider time " + curTime);
+                    long minutes = (long) (curTime / 60);
+                    long seconds = (long) (curTime % 60);
 
                     // Format the timer label as MM:SS
-                    String formattedTime = String.format("%02d:%02d", minutes, seconds);
-                    timerLabel.setText(formattedTime);  // Update the timer label
+                    String formattedTime = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                    timerLabel.setText(formattedTime);
                     System.out.println(currentTimeInSeconds);
 
                 }
@@ -103,7 +113,7 @@ public class ControlPanel extends JPanel {
         add(buttonPanel, BorderLayout.NORTH);
 //        add(progressSlider, BorderLayout.SOUTH);
 
-        loadAudio(finalFilePath);  // Specify the audio file path
+
     }
 
     public JSlider getProgressSlider() {
@@ -115,9 +125,7 @@ public class ControlPanel extends JPanel {
         button.setBackground(new Color(60, 60, 60));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(80, 80, 80)),
-                BorderFactory.createEmptyBorder(10, 20, 10, 20)  // Padding inside the button
+        button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(80, 80, 80)), BorderFactory.createEmptyBorder(10, 20, 10, 20)  // Padding inside the button
         ));
     }
 
@@ -129,13 +137,12 @@ public class ControlPanel extends JPanel {
             audioClip.open(audioStream);
 
             // Enable the slider after loading audio
-            progressSlider.setEnabled(true);
+//            progressSlider.setEnabled(true);
 
             // Timer for updating slider progress
             progressTimer = new Timer(100, e -> updateSlider());
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            JOptionPane.showMessageDialog(this, "Error loading audio file: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error loading audio file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -179,20 +186,21 @@ public class ControlPanel extends JPanel {
             SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
                 protected Void doInBackground() {
-                    long currentPos = audioClip.getMicrosecondPosition();
-                    long totalLength = audioClip.getMicrosecondLength();
+                    long currentPos = audioClip.getMicrosecondPosition(); // Current position in microseconds
+                    long totalLength = audioClip.getMicrosecondLength();  // Total length in microseconds
+
+                    // Update slider value (percentage progress)
                     int progress = (int) ((currentPos / (double) totalLength) * 100);
                     progressSlider.setValue(progress);
 
-                    // Calculate current time (in seconds)
-                    long currentTimeInSeconds = currentPos / 1000000; // Convert microseconds to seconds
+                    // Calculate current time in seconds
+                    long currentTimeInSeconds = currentPos / 1_000_000; // Convert microseconds to seconds
                     long minutes = currentTimeInSeconds / 60;
                     long seconds = currentTimeInSeconds % 60;
 
-                    // Format the timer label as MM:SS
-                    String formattedTime = String.format("%02d:%02d", minutes, seconds);
-                    timerLabel.setText(formattedTime);  // Update the timer label
-                    System.out.println(Float.parseFloat(formattedTime));
+                    // Ensure the arguments match the format specifiers (%02d expects int or long)
+                    String formattedTime = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                    timerLabel.setText(formattedTime);
 
                     return null;
                 }

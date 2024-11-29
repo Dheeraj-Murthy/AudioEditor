@@ -120,8 +120,11 @@ public class TrackEditor extends JPanel {
     }
 
     private void setSliderPos() {
-        double thumbPosition = ((double) slider.getValue() / (slider.getMaximum())) * (slider.getWidth() - 24);
-        sliderPos = thumbPosition + 12;
+        double width = ((double) slider.getValue() / (slider.getMaximum())) * (slider.getWidth() - 24);
+        sliderPos = width + 12;
+    }
+    public double getSliderPos() {
+        return sliderPos;
     }
 
     public static List<Track> getTracks() {

@@ -103,7 +103,7 @@ public class Clip extends JPanel {
         return clipRight > track.getWidth();
     }
 
-    private void setPos(int loco) {
+    private void setPos(float loco) {
         this.start = loco;
         this.end = start + size;
     }

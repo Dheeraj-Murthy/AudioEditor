@@ -129,7 +129,6 @@ public class Track extends JPanel {
                                             JOptionPane.ERROR_MESSAGE
                                     );
                                 }
-
                                 break;
                             case "Loop":
                                 try {
@@ -139,7 +138,6 @@ public class Track extends JPanel {
                                             "Loops: ",
                                             JOptionPane.QUESTION_MESSAGE
                                     );
-
                                     // Check if the user clicked "Cancel" or closed the dialog
                                     if (userInput == null) {
                                         JOptionPane.showMessageDialog(
@@ -150,12 +148,10 @@ public class Track extends JPanel {
                                         );
                                         return; // Exit the loop and terminate
                                     }
-
                                     double loop = Integer.parseInt(userInput);
                                     // todo: call native with filename, option, and count
                                     String[] param = { String.valueOf(loop) };
                                     callNative.callCode(filePath, 1, param);
-
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
                                     JOptionPane.showMessageDialog(
@@ -170,7 +166,6 @@ public class Track extends JPanel {
                                 try {
                                     ArrayList<String> params = new ArrayList<String>(Arrays.asList("Time stamp", "choose part(1/2)"));
                                     Map<String, String> input = MultiInputDialog.getUserInputs(params);
-
                                     if (input != null) {
                                         double threshold = Double.parseDouble(input.get(params.get(0)));
                                         double ratio = Double.parseDouble(input.get(params.get(1)));
@@ -203,7 +198,6 @@ public class Track extends JPanel {
                                             "Factor: ",
                                             JOptionPane.QUESTION_MESSAGE
                                     );
-
                                     // Check if the user clicked "Cancel" or closed the dialog
                                     if (userInput == null) {
                                         JOptionPane.showMessageDialog(
@@ -214,12 +208,10 @@ public class Track extends JPanel {
                                         );
                                         return; // Exit the loop and terminate
                                     }
-
                                     double factor = Double.parseDouble(userInput);
                                     // todo: call native with filename, option, and count
                                     String[] param = { String.valueOf(factor) };
                                     callNative.callCode(filePath, 3, param);
-
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
                                     JOptionPane.showMessageDialog(
@@ -229,7 +221,6 @@ public class Track extends JPanel {
                                             JOptionPane.ERROR_MESSAGE
                                     );
                                 }
-
                                 break;
                             case "Frequency Scaling":
                                 try {
@@ -239,7 +230,6 @@ public class Track extends JPanel {
                                             "Factor: ",
                                             JOptionPane.QUESTION_MESSAGE
                                     );
-
                                     // Check if the user clicked "Cancel" or closed the dialog
                                     if (userInput == null) {
                                         JOptionPane.showMessageDialog(
@@ -250,12 +240,10 @@ public class Track extends JPanel {
                                         );
                                         return; // Exit the loop and terminate
                                     }
-
                                     double factor = Double.parseDouble(userInput);
                                     // todo: call native with filename, option, and count
                                     String[] param = { String.valueOf(factor) };
                                     callNative.callCode(filePath, 4, param);
-
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
                                     JOptionPane.showMessageDialog(
@@ -265,7 +253,6 @@ public class Track extends JPanel {
                                             JOptionPane.ERROR_MESSAGE
                                     );
                                 }
-
                                 break;
                             case "Time Scaling":
                                 try {
@@ -275,7 +262,6 @@ public class Track extends JPanel {
                                             "Duration (in ms): ",
                                             JOptionPane.QUESTION_MESSAGE
                                     );
-
                                     // Check if the user clicked "Cancel" or closed the dialog
                                     if (userInput == null) {
                                         JOptionPane.showMessageDialog(
@@ -286,13 +272,11 @@ public class Track extends JPanel {
                                         );
                                         return; // Exit the loop and terminate
                                     }
-
                                     double duration = Double.parseDouble(userInput);
                                     duration = Math.round(duration * 1000) / 1000.0;
                                     // todo: call native with filename, option, and count
                                     String[] param = { String.valueOf(duration) };
                                     callNative.callCode(filePath, 5, param);
-
                                 } catch (NumberFormatException E) {
                                     // Show error message if input is not an integer
                                     JOptionPane.showMessageDialog(
@@ -302,14 +286,11 @@ public class Track extends JPanel {
                                             JOptionPane.ERROR_MESSAGE
                                     );
                                 }
-
                                 break;
-
                             case "Compressing":
                                 try {
                                     ArrayList<String> params = new ArrayList<String>(Arrays.asList("Threshold Frequency", "Compression Ratio"));
                                     Map<String, String> input = MultiInputDialog.getUserInputs(params);
-
                                     if (input != null) {
                                         double threshold = Double.parseDouble(input.get(params.get(0)));
                                         double ratio = Double.parseDouble(input.get(params.get(1)));

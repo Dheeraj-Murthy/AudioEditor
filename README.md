@@ -45,7 +45,7 @@ This project is a feature-rich **Audio Editor** that combines Java's user-friend
 ## **Installation Guide**
 ### Clone the Repository
 Run the following command:  
-`git clone https://github.com/Dheeraj-Murthy/Sem3-cpp-java-Project.git`
+    `git@github.com:Dheeraj-Murthy/AudioEditor.git`
 
 ### Setup
 1. **Java & C++**: Ensure you have OpenJDK and g++ installed.

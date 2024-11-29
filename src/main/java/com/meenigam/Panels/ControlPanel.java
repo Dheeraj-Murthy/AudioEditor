@@ -78,7 +78,7 @@ public class ControlPanel extends JPanel {
 
 // Calculate slider width (10x duration of the clip in seconds)
         long clipDurationInSeconds = audioClip.getMicrosecondLength() / 1_000_000; // Convert microseconds to seconds
-        int sliderWidth = (int) clipDurationInSeconds*10;
+        int sliderWidth = (int) clipDurationInSeconds * 10;
 
 // Set the slider's preferred size
         progressSlider.setPreferredSize(new Dimension(sliderWidth, 20)); // Width: 10x duration, Height: 20
@@ -94,7 +94,7 @@ public class ControlPanel extends JPanel {
 
                     // Calculate current time (in seconds)
                     long currentTimeInSeconds = audioClip.getMicrosecondPosition() / 1000000 * 5 / 8; // Convert microseconds to seconds
-                    double curTime = frame.getTrackEditor().getSliderPos() /10;
+                    double curTime = (frame.getTrackEditor().getSliderPos() / 10 ) * 30/31;
                     System.out.println("Current Time: " + currentTimeInSeconds + " slider time " + curTime);
                     long minutes = (long) (curTime / 60);
                     long seconds = (long) (curTime % 60);
@@ -190,7 +190,7 @@ public class ControlPanel extends JPanel {
                     long totalLength = audioClip.getMicrosecondLength();  // Total length in microseconds
 
                     // Update slider value (percentage progress)
-                    int progress = (int) ((currentPos / (double) totalLength) * 100);
+                    int progress = (int) ((currentPos / (double) totalLength) * 900);
                     progressSlider.setValue(progress);
 
                     // Calculate current time in seconds

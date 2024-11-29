@@ -126,4 +126,4 @@ Run the following command:
 
 ## **License**
 
-This project is licensed under the MIT License. Refer to the LICENSE file for more details.
+This project is licensed under the MIT License. 

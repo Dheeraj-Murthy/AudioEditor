@@ -12,7 +12,7 @@ public class callNative {
     }
 
     public static void callCode(String message, int operation, String[] params) {
-        new callNative().sayHello(message,operation, params);
+        new callNative().sayHello(message, operation, params);
 
     }
 

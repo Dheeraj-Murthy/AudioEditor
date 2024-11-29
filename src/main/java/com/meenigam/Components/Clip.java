@@ -38,7 +38,7 @@ public class Clip extends JPanel {
             @Override
             public void componentResized(ComponentEvent e) {
                 updateHeight();
-                setSize((int)file.getDuration()*10, getHeight());
+                setSize((int) file.getDuration() * 10, getHeight());
             }
         });
 
@@ -64,7 +64,7 @@ public class Clip extends JPanel {
                     }
                     return;
                 }
-                setPos(location.x*10);
+                setPos(location.x * 10);
 
                 Rectangle oldBounds = getBounds();
                 setLocation(newLocation);

@@ -1,10 +1,13 @@
 package com.meenigam;
 
 
+import com.meenigam.Components.Clip;
+import com.meenigam.Components.Track;
 import com.meenigam.Panels.ControlPanel;
 import com.meenigam.Panels.StagingArea;
 import com.meenigam.Panels.TrackEditor;
 import com.meenigam.Utils.PanelFocusAdapter;
+import com.meenigam.Utils.callNative;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
 public class Frame extends JFrame {
 
@@ -94,6 +98,8 @@ public class Frame extends JFrame {
         trackEditor.setSlider(slider);
 
     }
+
+    public Path getHomeDir() { return Path.of(manager.getTempLocation()).getParent(); }
 
     private void reset(JFrame frame) {
         for (Component comp : frame.getContentPane().getComponents()) {
@@ -215,8 +221,6 @@ public class Frame extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             String path = chooser.getSelectedFile().getAbsolutePath();
             manager.setSavePath(path);
-            JOptionPane.showMessageDialog(this, "File saved to to:\n" + path,
-                    "Directory Selected", JOptionPane.INFORMATION_MESSAGE);
         }
 
         String userInput = JOptionPane.showInputDialog(
@@ -230,18 +234,34 @@ public class Frame extends JFrame {
         } else {
             manager.setSavePath(manager.getSavePath() + "/finalAudio.wav");
         }
-        System.out.println(manager.getSavePath());
         export(Path.of(manager.getTempLocation()), Path.of(manager.getSavePath()));
     }
 
     private void updateMaster() {
-        //todo
+        for (Track track : TrackEditor.getTracks()) {
+            ArrayList<Clip> clips = track.getClips();
+            for (Clip clip : clips) {
+                String[] param = {clip.getPath(), String.valueOf(clip.getStart())};
+                callNative.callCode(manager.finalFilePath, 10, param);
+            }
+        }
     }
 
     private void export(Path oldLoc, Path newLoc) throws IOException {
-        Path oldFolder = oldLoc.getParent();
-
-        Files.copy(oldLoc, newLoc, StandardCopyOption.REPLACE_EXISTING);
+        updateMaster();
+        Files.copy(oldLoc, newLoc, StandardCopyOption.REPLACE_EXISTING); //todo: Trimming
+        float maxEnd = 0.0f;
+        for (Track track : TrackEditor.getTracks()) {
+            ArrayList<Clip> clips = track.getClips();
+            for (Clip clip : clips) {
+                if (maxEnd < clip.getEnd())
+                    maxEnd = clip.getEnd();
+            }
+        }
+        String[] param = {String.valueOf(maxEnd * 1000), String.valueOf(1)};
+        callNative.callCode(newLoc.toString(), 2, param);
+        JOptionPane.showMessageDialog(this, "File saved as:\n" + newLoc,
+                "Export Successful", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void toggleMaximize() {

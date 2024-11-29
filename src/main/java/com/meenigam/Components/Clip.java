@@ -79,6 +79,10 @@ public class Clip extends JPanel {
         addMouseMotionListener(mouseHandler);
     }
 
+    public String getPath() { return this.fileComponent.getFilePath(); }
+    public float getStart() { return (this.start * 1000); }
+    public float getEnd() { return this.end; }
+
     private void updateHeight() {
         int newHeight = track.getClipContainer().getHeight();
         setPreferredSize(new Dimension(getPreferredSize().width, newHeight));

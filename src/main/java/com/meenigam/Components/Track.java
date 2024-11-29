@@ -466,6 +466,8 @@ public class Track extends JPanel {
         }
     }
 
+    public ArrayList<Clip> getClips() { return this.clips; }
+
     public void setClip(FileComponent fileComponent) {
         Clip clip = new Clip(new FileComponent(fileComponent), this);
         clips.add(clip);

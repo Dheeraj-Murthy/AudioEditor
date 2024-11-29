@@ -3,6 +3,7 @@ package com.meenigam;
 import com.meenigam.Utils.callNative;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,7 +17,8 @@ public class Manager {
     public final String finalFilePath;
 
     public Manager() throws IOException, UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        File baseDir = new File(userHome, HomePath);
+        homePathDialog();
+        File baseDir = new File(HomePath);
         // Check if base directory exists
         if (!baseDir.exists() || !baseDir.isDirectory()) {
             throw new IOException("Base path does not exist or is not a directory: " + HomePath);
@@ -45,6 +47,22 @@ public class Manager {
     }
     public void setSavePath(String savePath) {
         this.SavePath = savePath;
+    }
+
+    private void homePathDialog() {
+        JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        chooser.setDialogTitle("Choose Parent Directory");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int result = chooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            this.setHomePath(path);
+            JOptionPane.showMessageDialog(null, "Project directory set to:\n" + path,
+                    "Directory Selected", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            this.setHomePath(userHome + "/" + HomePath);
+        }
     }
 
 }

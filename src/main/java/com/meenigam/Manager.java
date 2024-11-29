@@ -32,14 +32,14 @@ public class Manager {
 //        WavFileCreator.createBlankWav(newFile.getAbsolutePath(), 130);
         String[] param = {String.valueOf(900)};
         callNative.callCode(newFile.getAbsolutePath(), -1, param);
-        System.out.println(newFile.getAbsolutePath());
+//        System.out.println(newFile.getAbsolutePath());
         finalFilePath = newFile.getAbsolutePath();
 
         frame = new Frame(this);
     }
 
     public String getSavePath() { return this.SavePath; }
-    public String getTempLocation() { return (this.HomePath + '/' + this.finalFile); }
+    public String getTempLocation() { return this.finalFilePath; }
     public void setHomePath(String homePath) {
         this.HomePath = homePath;
     }

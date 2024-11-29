@@ -874,13 +874,8 @@ void utilityBelt(int input, string inputFilePath, string outputFilePath, vector<
         case 10: // superimposition
         {
 
-            string overlayFilePath;
-            int offsetMs;
-
-            cout << "Enter the path to the overlay WAV file: ";
-            cin >> overlayFilePath;
-            cout << "Enter the offset in milliseconds: ";
-            cin >> offsetMs;
+            string overlayFilePath = params[0];
+            int offsetMs = static_cast<int>(stof(params[1]));
 
             try {
                 superimposeWAVFiles(inputFilePath, overlayFilePath, outputFilePath, offsetMs);

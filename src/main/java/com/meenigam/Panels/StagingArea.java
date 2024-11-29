@@ -8,6 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+
+import com.meenigam.Frame;
 
 public class StagingArea extends JPanel {
 
@@ -47,6 +54,11 @@ public class StagingArea extends JPanel {
         addFile.setOpaque(true);
         addFile.setBorderPainted(false);
         add(addFile, BorderLayout.SOUTH);
+        Path homeDir = frame.getHomeDir();
+        File filesFolder = new File(homeDir + "/Files");
+        if (!filesFolder.exists())
+            filesFolder.mkdir();
+        Path fileDir = homeDir.resolve("Files");
 
         // Button action to open a file dialog and add the selected file to the list
         addFile.addActionListener(new ActionListener() {
@@ -63,8 +75,14 @@ public class StagingArea extends JPanel {
                 if (fileName != null && fileName.toLowerCase().endsWith(".wav")) { // If the user selected a file
                     String fullPath = directory + fileName;
                     System.out.println("Selected File: " + fullPath);
+                    String newLoc = fileDir.toString() + '/' + fileName;
+                    try {
+                        Files.copy(Path.of(fullPath), Path.of(newLoc), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     // Add the file name to the list
-                    listModel.addElement(new FileComponent(fileName, fullPath, frame, stagingArea));
+                    listModel.addElement(new FileComponent(fileName, newLoc, frame, stagingArea));
                 } else {
                     JOptionPane.showMessageDialog(null, "Please select a valid file");
                 }

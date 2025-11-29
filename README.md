@@ -2,11 +2,13 @@
 
 ## **Overview**
 
-This project is a feature-rich **Audio Editor** that combines Java's user-friendly interface capabilities with C++'s
-performance-oriented audio processing power. By leveraging the **Java Native Interface (JNI)**, the application bridges
-the gap between platform-independent UI development and high-performance native processing. It supports essential
-functionalities like **amplitude scaling, frequency scaling, clipping, looping, reverb, and multi-track editing**, among
-others.
+This project is a feature-rich **Audio Editor** that combines Java's
+user-friendly interface capabilities with C++'s performance-oriented audio
+processing power. By leveraging the **Java Native Interface (JNI)**, the
+application bridges the gap between platform-independent UI development and
+high-performance native processing. It supports essential functionalities like
+**amplitude scaling, frequency scaling, clipping, looping, reverb, and
+multi-track editing**, among others.
 
 ---
 
@@ -15,7 +17,8 @@ others.
 ### **Core Functionalities**
 
 - **Amplitude Scaling**: Modify the amplitude of audio clips.
-- **Compression**: Apply dynamic range compression with customizable thresholds and ratios.
+- **Compression**: Apply dynamic range compression with customizable thresholds
+  and ratios.
 - **Frequency Scaling**: Adjust pitch and frequency for audio manipulation.
 - **Looping**: Select and loop specific portions of an audio clip.
 - **Reverb**: Alter persistence factors for creating reverberation effects.
@@ -39,39 +42,87 @@ others.
 ## **Quick Start**
 
 ### **Prerequisites**
-- **Java**: OpenJDK 22 or higher
-- **Build Tool**: Maven 3.6+
-- **C++ Compiler**: g++ (Linux/macOS) or MinGW (Windows)
-- **IDE**: IntelliJ IDEA (recommended) or VS Code
 
-### **Installation**
+- **Java**: OpenJDK 22 or higher
+- **Maven**: 3.6+
+- **C++ Compiler**: g++ (Linux/macOS) or MinGW (Windows)
+- **Make**: Build automation tool (included with most systems)
+- **IDE**: IntelliJ IDEA (optional) or VS Code (optional)
+
+### **Installation and Running**
 
 1. **Clone the Repository**
+
    ```bash
    git clone https://github.com/Dheeraj-Murthy/AudioEditor.git
    cd AudioEditor
    ```
 
-2. **Compile Native Library**
+2. **Build and Run (Recommended)**
+
    ```bash
-   # On macOS/Linux
-   cd native
-   g++ -shared -fPIC -o libnative.so *.cpp
-   
-   # On macOS (alternative)
-   g++ -shared -fPIC -o libnative.dylib *.cpp
+   # Build everything and run in one command
+   make dev
+
+   # Or step by step
+   make build    # Build native library + Java code
+   make run      # Run the application
    ```
 
-3. **Setup IntelliJ IDEA**
+3. **Using IntelliJ IDEA (Optional)**
    - Open the project in IntelliJ IDEA
    - Add VM options: `-Djava.library.path=native`
    - Run `Main.java`
 
-4. **Alternative: Use Build Scripts**
+4. **Check Available Commands**
    ```bash
-   # Compile and run in one command
-   ./scripts/build_and_run.sh
+   make help     # Show all available commands
    ```
+
+---
+
+## **Build and Test Commands**
+
+### **Build Commands**
+
+```bash
+make build          # Build everything (native + Java)
+make native-lib     # Build C++ native library only
+make java-compile   # Compile Java code only
+make clean          # Clean build artifacts
+make clean-all      # Clean all generated files
+```
+
+### **Test Commands**
+
+```bash
+make test           # Run all tests with detailed output
+make test-unit      # Run unit tests (component isolation)
+make test-integration # Run integration tests (component interaction)
+make test-system    # Run system tests (end-to-end workflows)
+make test-acceptance # Run acceptance tests (user scenarios)
+make test-quick     # Run unit + integration tests (faster)
+```
+
+### **Development Commands**
+
+```bash
+make run            # Build and run application
+make debug          # Run in debug mode (port 5005)
+make dev            # Clean, build, and run (full workflow)
+make dev-quick      # Quick development cycle
+make help           # Show all available commands
+make check-tools    # Verify required tools are installed
+```
+
+### **Utility Commands**
+
+```bash
+make deps           # Install/update dependencies
+make package        # Package application for distribution
+make dist           # Create complete distribution package
+make docs           # Generate documentation
+```
 
 ---
 
@@ -92,11 +143,56 @@ AudioEditor/
 │       ├── Frame.java          # Main window
 │       ├── Manager.java        # Application manager
 │       └── Main.java           # Entry point
+├── src/test/java/              # Test source code
+│   ├── unit/                   # Unit tests
+│   ├── integration/            # Integration tests
+│   ├── system/                 # System tests
+│   └── acceptance/             # Acceptance tests
 ├── docs/                       # Documentation
-├── scripts/                    # Build and test scripts
-├── tests/                      # Test files
+├── scripts/                    # Legacy build and test scripts
+├── Makefile                    # Primary build automation
 ├── pom.xml                     # Maven configuration
+├── PROJECT_REPORT.md           # Comprehensive project report
 └── README.md                   # This file
+```
+
+---
+
+## **Testing**
+
+### **Using Makefile (Recommended)**
+
+```bash
+# Run all tests with descriptive output
+make test
+
+# Run specific test categories
+make test-unit         # Test individual components
+make test-integration  # Test component interactions
+make test-system       # Test complete workflows
+make test-acceptance   # Test user scenarios
+```
+
+### **Test Categories**
+
+- **Unit Tests**: TestAudioPlayer, TestCallNative, TestClip, TestManager
+- **Integration Tests**: TestAudioPlayback, TestJNIIntegration
+- **System Tests**: TestFullWorkflow
+- **Acceptance Tests**: TestUserScenarios
+
+### **Test Output Features**
+
+- **Descriptive Headings**: Clear category identification
+- **Detailed Listings**: What each test class validates
+- **Color-coded Output**: Easy-to-read test results
+- **Progress Tracking**: Visual separation of test phases
+
+### **Legacy Scripts (Alternative)**
+
+```bash
+./scripts/run_all_tests.sh
+./scripts/test_native_library.sh
+./scripts/test_audio_playback.sh
 ```
 
 ---
@@ -104,39 +200,73 @@ AudioEditor/
 ## **Detailed Setup**
 
 For detailed step-by-step instructions, please refer to:
+
 - 📖 [SETUP.md](docs/SETUP.md) - Complete setup guide
 - 🧪 [TESTING.md](docs/TESTING.md) - Testing procedures
-- 📊 [PROJECT_REPORT.pdf](docs/PROJECT_REPORT.pdf) - Formal project report
+- 📊 [PROJECT_REPORT.md](PROJECT_REPORT.md) - Comprehensive project report
 
 ---
 
-## **Testing**
+## **Key Features**
 
-### **Run All Tests**
-```bash
-./scripts/run_all_tests.sh
-```
+### **Audio Editing Capabilities**
 
-### **Individual Tests**
-```bash
-# Test native library compilation
-./scripts/test_native_library.sh
+- **Multi-track Editing**: Layer and edit multiple audio files
+- **Real-time Waveform Display**: Visual audio representation
+- **Audio Effects**: Amplitude scaling, frequency scaling, reverb, compression
+- **Clip Management**: Trimming, looping, superimposition
+- **File Support**: WAV file import/export
+- **Cross-platform**: Windows, macOS, Linux compatibility
 
-# Test audio playback
-./scripts/test_audio_playback.sh
-```
+### **User Interface Enhancements**
 
-### **Test Coverage**
-- ✅ Native library compilation
-- ✅ Audio file loading and playback
-- ✅ UI component functionality
-- ✅ Multi-track editing
-- ✅ Audio effects processing
-- ✅ Cross-platform compatibility
+- **Floating Audio Editing Button**: Always accessible "⋮ Edit" button
+- **Track Selection**: Visual highlighting and feedback
+- **Context Menus**: Right-click options for tracks
+- **Glass Pane System**: Advanced overlay management
+- **Responsive Design**: Intuitive Swing-based interface
+
+### **Development Features**
+
+- **Comprehensive Testing**: 4-tier test architecture
+- **Native Integration**: High-performance C++ audio processing
+- **Build Automation**: Cross-platform Makefile system
+- **IDE Support**: IntelliJ IDEA integration
+- **Documentation**: Complete setup and testing guides
 
 ---
 
-## **Build Scripts**
+## **Development Workflow**
+
+### **Recommended Daily Workflow**
+
+```bash
+# Start development
+make dev-quick      # Quick compile and run
+
+# Full development cycle
+make dev            # Clean, build, and run
+
+# During development
+make test-quick     # Run core tests quickly
+make run            # Just run the application
+```
+
+### **Continuous Integration**
+
+```bash
+# Full CI pipeline
+make ci             # Clean, check tools, build, test, package
+```
+
+### **Debugging and Profiling**
+
+```bash
+make debug          # Run with debug enabled (port 5005)
+make profile        # Run with profiling enabled
+```
+
+### **Legacy Scripts**
 
 - `scripts/build_native.sh` - Compile native library
 - `scripts/run_project.sh` - Run with correct VM options
@@ -168,7 +298,8 @@ This project is licensed under the MIT License.
 
 ## **Repository Information**
 
-📁 **GitHub Repository**: [https://github.com/Dheeraj-Murthy/AudioEditor](https://github.com/Dheeraj-Murthy/AudioEditor)
+📁 **GitHub Repository**:
+[https://github.com/Dheeraj-Murthy/AudioEditor](https://github.com/Dheeraj-Murthy/AudioEditor)
 
 📄 **Repository Link File**: [GITHUB_REPO_LINK.txt](GITHUB_REPO_LINK.txt)
 
@@ -177,6 +308,8 @@ This project is licensed under the MIT License.
 ## **Support**
 
 For issues and questions:
+
 1. Check the [SETUP.md](docs/SETUP.md) for installation problems
 2. Refer to [TESTING.md](docs/TESTING.md) for testing issues
-3. Create an issue on the GitHub repository 
+3. Create an issue on the GitHub repository
+

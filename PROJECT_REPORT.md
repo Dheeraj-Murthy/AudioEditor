@@ -1,5 +1,13 @@
 # Audio Editor Project Report
 
+**Team Members:**
+
+- M S Dheeraj Murthy (IMT2023552)
+- Mathew Joseph (IMT2023008)
+- Ayush Tiwari (IMT2023524)
+- Mathew Joseph (IMT2023008)
+- Priyanshu Pattnaik (IMT2023046)
+
 [GitHub URL: https://github.com/Dheeraj-Murthy/AudioEditor.git](https://github.com/Dheeraj-Murthy/AudioEditor.git)
 
 ## Project Overview

@@ -1,0 +1,62 @@
+Audio Editor Project - GitHub Repository
+=====================================
+
+Project Name: Audio Editor: "The Kitchen"
+Repository URL: https://github.com/Dheeraj-Murthy/AudioEditor
+
+Repository Information:
+----------------------
+- Main Repository: https://github.com/Dheeraj-Murthy/AudioEditor
+- Clone URL: git@github.com:Dheeraj-Murthy/AudioEditor.git
+- HTTPS URL: https://github.com/Dheeraj-Murthy/AudioEditor.git
+
+Project Details:
+---------------
+- Type: Desktop Audio Editing Application
+- Language: Java (Frontend) + C++ (Backend)
+- Framework: Java Swing + JNI
+- Platform: Cross-platform (Windows, macOS, Linux)
+
+Team Members:
+-------------
+- M S Dheeraj Murthy (IMT2023552) - Project Lead
+- Mathew Joseph (IMT2023008) - UI Development
+- Ayush Tiwari (IMT2023524) - C++ Backend
+- Lesin (IMT2023565) - Testing
+- Priyanshu Pattnaik (IMT2023046) - Documentation
+
+Repository Contents:
+-------------------
+- Source code (Java + C++)
+- Build scripts and configuration
+- Comprehensive documentation
+- Test suites and testing procedures
+- Installation and setup guides
+
+Quick Access:
+------------
+1. README.md: Project overview and quick start
+2. docs/SETUP.md: Detailed setup instructions
+3. docs/TESTING.md: Testing procedures
+4. docs/PROJECT_REPORT.md: Complete project report
+5. scripts/: Build and test automation
+
+Repository Status:
+-----------------
+- Status: Active Development
+- Version: 1.0-SNAPSHOT
+- Last Updated: November 2025
+- License: MIT License
+
+For submission purposes, this file serves as proof of GitHub repository
+creation and contains the necessary repository link for evaluation.
+
+Submission Information:
+---------------------
+Course: Software Engineering Project
+Institution: IIIT Bangalore
+Submission Date: November 2025
+Submitted by: M S Dheeraj Murthy (IMT2023552)
+
+Note: This file is generated as part of the project submission requirements
+to provide easy access to the GitHub repository link.

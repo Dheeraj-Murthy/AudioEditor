@@ -30,6 +30,9 @@ public class ControlPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(45, 45, 45));
         this.frame = frame;
+        
+        // Debug audio system
+        debugAudioSystem();
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setBackground(new Color(45, 45, 45));
@@ -131,24 +134,130 @@ public class ControlPanel extends JPanel {
     public void loadAudio(String filePath) {
         try {
             File audioFile = new File(filePath);
+            System.out.println("Loading audio file: " + audioFile.getAbsolutePath());
+            System.out.println("File exists: " + audioFile.exists());
+            System.out.println("File size: " + audioFile.length() + " bytes");
+            
+            if (!audioFile.exists() || audioFile.length() == 0) {
+                throw new IOException("Audio file does not exist or is empty: " + filePath);
+            }
+            
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-            audioClip = AudioSystem.getClip();
+            AudioFormat format = audioStream.getFormat();
+            System.out.println("Audio format: " + format);
+            
+            // Try to get a specific mixer for better audio output
+            Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+            Mixer speakerMixer = null;
+            
+            // Find the speaker mixer that supports Clip lines
+            for (Mixer.Info mixer : mixers) {
+                Mixer currentMixer = AudioSystem.getMixer(mixer);
+                // Check if this mixer supports Clip lines and is not a Port mixer
+                if (!mixer.getName().contains("Port") && 
+                    currentMixer.isLineSupported(new Line.Info(Clip.class))) {
+                    if (mixer.getName().contains("Speakers") || 
+                        mixer.getName().contains("Built-in Output") ||
+                        mixer.getName().contains("Default Audio Device")) {
+                        speakerMixer = currentMixer;
+                        System.out.println("Using speaker mixer: " + mixer.getName());
+                        break;
+                    }
+                }
+            }
+            
+            // Get clip from the appropriate mixer
+            if (speakerMixer != null) {
+                try {
+                    audioClip = (Clip) speakerMixer.getLine(new Line.Info(Clip.class));
+                    System.out.println("Successfully got clip from speaker mixer");
+                } catch (Exception e) {
+                    System.out.println("Failed to get clip from speaker mixer: " + e.getMessage());
+                    System.out.println("Falling back to default system clip");
+                    audioClip = AudioSystem.getClip();
+                }
+            } else {
+                audioClip = AudioSystem.getClip();
+                System.out.println("Using default system clip");
+            }
+            
             audioClip.open(audioStream);
+            
+            // Add line listener to monitor playback state
+            audioClip.addLineListener(event -> {
+                System.out.println("Line event: " + event.getType());
+                if (event.getType() == LineEvent.Type.START) {
+                    System.out.println("Audio playback started");
+                } else if (event.getType() == LineEvent.Type.STOP) {
+                    System.out.println("Audio playback stopped");
+                } else if (event.getType() == LineEvent.Type.CLOSE) {
+                    System.out.println("Audio line closed");
+                }
+            });
+            
+            System.out.println("Audio clip loaded successfully");
+            System.out.println("Clip duration (microseconds): " + audioClip.getMicrosecondLength());
+            System.out.println("Clip duration (seconds): " + (audioClip.getMicrosecondLength() / 1_000_000.0));
 
             progressTimer = new Timer(100, e -> updateSlider());
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.err.println("Error loading audio file: " + e.getMessage());
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading audio file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void playAudio() {
         if (audioClip != null) {
+            System.out.println("Playing audio clip...");
+            System.out.println("Clip frame length: " + audioClip.getFrameLength());
+            System.out.println("Clip is running: " + audioClip.isRunning());
+            System.out.println("Clip frame position: " + audioClip.getFramePosition());
+            
+            // Check if the line is active and open
+            if (!audioClip.isOpen()) {
+                System.err.println("Audio clip is not open!");
+                return;
+            }
+            
+            // Get the line info to check if it's properly connected
+            Line.Info lineInfo = audioClip.getLineInfo();
+            System.out.println("Line info: " + lineInfo);
+            
             if (isPaused) {
                 audioClip.setMicrosecondPosition(clipPosition);
                 isPaused = false;
+                System.out.println("Resuming from position: " + clipPosition);
+            } else {
+                // Reset to beginning if not paused
+                audioClip.setFramePosition(0);
             }
+            
+            // Set volume to maximum (0.0 to 1.0)
+            if (audioClip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl gainControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+                float maxGain = gainControl.getMaximum();
+                gainControl.setValue(maxGain);
+                System.out.println("Volume set to maximum: " + maxGain);
+            }
+            
             audioClip.start();
             progressTimer.start();
+            System.out.println("Audio playback started - you should hear sound now!");
+            
+            // Check if playback actually started
+            Timer checkTimer = new Timer(100, e -> {
+                if (audioClip.isRunning()) {
+                    System.out.println("Playback confirmed - clip is running");
+                } else {
+                    System.out.println("Warning: Clip is not running after start()");
+                }
+            });
+            checkTimer.setRepeats(false);
+            checkTimer.start();
+            
+        } else {
+            System.err.println("Cannot play: audioClip is null");
         }
     }
 
@@ -214,5 +323,29 @@ public class ControlPanel extends JPanel {
 
     public JButton getStopButton() {
         return stopButton;
+    }
+    
+    private void debugAudioSystem() {
+        System.out.println("=== Audio System Debug ===");
+        
+        // List available mixers
+        Mixer.Info[] mixers = AudioSystem.getMixerInfo();
+        System.out.println("Available Audio Mixers:");
+        for (Mixer.Info mixer : mixers) {
+            System.out.println("  - " + mixer.getName() + ": " + mixer.getDescription());
+        }
+        
+        // Check default mixer
+        Mixer defaultMixer = AudioSystem.getMixer(null);
+        System.out.println("Default mixer: " + defaultMixer.getMixerInfo().getName());
+        
+        // List available source lines (for output)
+        Line.Info[] sourceLines = defaultMixer.getSourceLineInfo();
+        System.out.println("Available source lines:");
+        for (Line.Info line : sourceLines) {
+            System.out.println("  - " + line);
+        }
+        
+        System.out.println("=== End Audio System Debug ===");
     }
 }

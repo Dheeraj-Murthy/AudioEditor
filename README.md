@@ -31,81 +31,117 @@ others.
 - Cross-platform compatibility (Windows, macOS, Linux).
 - Responsive and intuitive Java Swing-based UI.
 - Support for .wav file input and output.
+- Real-time audio playback with volume control.
+- Drag-and-drop clip positioning on tracks.
 
 ---
 
-## **Getting Started**
+## **Quick Start**
 
-### **System Requirements**
+### **Prerequisites**
+- **Java**: OpenJDK 22 or higher
+- **Build Tool**: Maven 3.6+
+- **C++ Compiler**: g++ (Linux/macOS) or MinGW (Windows)
+- **IDE**: IntelliJ IDEA (recommended) or VS Code
 
-- **Frontend**: Java (Swing)
-- **Backend**: C++
-- **Middleware**: JNI for communication between Java and C++
-- **Platforms Supported**: macOS, Ubuntu, Windows
-- **Tools**:
-    - OpenJDK 22.0.1
-    - g++
-    - NeoVim
-    - IntelliJ IDEA
-    - VS Code
-    - Git
+### **Installation**
 
----
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Dheeraj-Murthy/AudioEditor.git
+   cd AudioEditor
+   ```
 
-## **Installation Guide**
+2. **Compile Native Library**
+   ```bash
+   # On macOS/Linux
+   cd native
+   g++ -shared -fPIC -o libnative.so *.cpp
+   
+   # On macOS (alternative)
+   g++ -shared -fPIC -o libnative.dylib *.cpp
+   ```
 
-### Clone the Repository
+3. **Setup IntelliJ IDEA**
+   - Open the project in IntelliJ IDEA
+   - Add VM options: `-Djava.library.path=native`
+   - Run `Main.java`
 
-Run the following command:  
-    `git@github.com:Dheeraj-Murthy/AudioEditor.git`
-
-### Setup
-
-1. **Java & C++**: Ensure you have OpenJDK and g++ installed.
-2. **Compile Native Code**:
-    - On **Ubuntu** or **macOS**:  
-      `cd native`  
-      `g++ -shared -o libaudioeffects.so -fPIC *.cpp`
-    - On **Windows**:  
-      Follow the instructions in the project documentation for your specific setup.
-3. **Run the Project**:
-    - Open the project in IntelliJ IDEA.
-    - Configure the JNI library path to point to the compiled `libaudioeffects.so` (or equivalent for your OS).
-    - Run `Main.java` to start the application.
+4. **Alternative: Use Build Scripts**
+   ```bash
+   # Compile and run in one command
+   ./scripts/build_and_run.sh
+   ```
 
 ---
 
-## **Workflow**
+## **Project Structure**
 
-1. **UI Development**:
-    - Build the frontend in Java using Swing.
-    - Create user-friendly controls for playback, amplitude scaling, and clip editing.
-2. **Audio Processing Implementation**:
-    - Implement audio manipulation functionalities in C++.
-    - Example functions include amplitude scaling, frequency manipulation, and reverb.
-3. **JNI Bridge**:
-    - Use JNI to enable communication between Java and C++.
-    - Write Java native methods that invoke the C++ backend logic.
+```
+AudioEditor/
+├── native/                     # C++ native library
+│   ├── *.cpp                   # C++ source files
+│   ├── *.h                     # Header files
+│   ├── libnative.so            # Compiled library (Linux)
+│   └── libnative.dylib         # Compiled library (macOS)
+├── src/main/java/              # Java source code
+│   └── com/meenigam/           # Main package
+│       ├── Components/         # UI components
+│       ├── Panels/             # Main panels
+│       ├── Utils/              # Utility classes
+│       ├── Frame.java          # Main window
+│       ├── Manager.java        # Application manager
+│       └── Main.java           # Entry point
+├── docs/                       # Documentation
+├── scripts/                    # Build and test scripts
+├── tests/                      # Test files
+├── pom.xml                     # Maven configuration
+└── README.md                   # This file
+```
 
 ---
 
-## **Folder Structure**
+## **Detailed Setup**
 
-- **native/**: Contains the C++ implementation of audio editing functions.
-- **src/main/java/**: Contains all Java code, including the UI logic.
+For detailed step-by-step instructions, please refer to:
+- 📖 [SETUP.md](docs/SETUP.md) - Complete setup guide
+- 🧪 [TESTING.md](docs/TESTING.md) - Testing procedures
+- 📊 [PROJECT_REPORT.pdf](docs/PROJECT_REPORT.pdf) - Formal project report
 
 ---
 
 ## **Testing**
 
-- **Unit Testing**:
-    - Validate individual functionalities like amplitude scaling, trimming, and looping.
-- **Integration Testing**:
-    - Test the interaction between the Java frontend and C++ backend via JNI.
-- **Performance Testing**:
-    - Measure processing times for large audio files.
-- **Error Handling**:
-    - Check robustness against invalid inputs and exceptions.
+### **Run All Tests**
+```bash
+./scripts/run_all_tests.sh
+```
+
+### **Individual Tests**
+```bash
+# Test native library compilation
+./scripts/test_native_library.sh
+
+# Test audio playback
+./scripts/test_audio_playback.sh
+```
+
+### **Test Coverage**
+- ✅ Native library compilation
+- ✅ Audio file loading and playback
+- ✅ UI component functionality
+- ✅ Multi-track editing
+- ✅ Audio effects processing
+- ✅ Cross-platform compatibility
+
+---
+
+## **Build Scripts**
+
+- `scripts/build_native.sh` - Compile native library
+- `scripts/run_project.sh` - Run with correct VM options
+- `scripts/test_audio_playback.sh` - Test audio functionality
+- `scripts/run_all_tests.sh` - Execute all tests
 
 ---
 
@@ -126,4 +162,21 @@ Run the following command:
 
 ## **License**
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
+
+---
+
+## **Repository Information**
+
+📁 **GitHub Repository**: [https://github.com/Dheeraj-Murthy/AudioEditor](https://github.com/Dheeraj-Murthy/AudioEditor)
+
+📄 **Repository Link File**: [GITHUB_REPO_LINK.txt](GITHUB_REPO_LINK.txt)
+
+---
+
+## **Support**
+
+For issues and questions:
+1. Check the [SETUP.md](docs/SETUP.md) for installation problems
+2. Refer to [TESTING.md](docs/TESTING.md) for testing issues
+3. Create an issue on the GitHub repository 

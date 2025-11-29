@@ -1,5 +1,7 @@
 # Audio Editor Project Report
 
+[GitHub URL: https://github.com/Dheeraj-Murthy/AudioEditor.git](https://github.com/Dheeraj-Murthy/AudioEditor.git)
+
 ## Project Overview
 
 The Audio Editor is a comprehensive Java-based desktop application for audio
@@ -165,11 +167,19 @@ make debug          # Run in debug mode
 make run            # Build and run application
 ```
 
-## Test Output
+<div style="display: flex; flex-direction: column; margin: 0; padding: 0;">
+  <h2 style="margin-bottom: 0;">Test Output</h2>
+  <hr/>
+  <img src="Test-script-Output.png" style="margin-top: 0;" />
+</div>
 
-```bash
+<!-- ## Test Output -->
+<!---->
+<!-- ![Test Script](Test-script-Output.png) -->
 
-```
+<!-- <center> -->
+<!-- <img src="Test-script-Output.png" alt="drawing" /> -->
+<!-- </center> -->
 
 ## Known Issues
 
